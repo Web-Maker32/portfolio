@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import Card from "../../../components/card";
+import Card from "@/components/card";
 
 type Project = {
   id: number;
@@ -34,7 +34,7 @@ const projects: Project[] = [
     title: "Portfolio Site",
     description: "This website, built with Next.js and Tailwind, demonstrates a clean personal portfolio and project showcase.",
     details: "A responsive portfolio layout highlighting projects, skills, and tech stack.",
-    stargazers_count: 18,
+    stargazers_count: 58,
     url: "/",
     previewImage: portfolioImage,
     cardImage: portfolioImage,
@@ -43,17 +43,18 @@ const projects: Project[] = [
 
 export default function ProjectsList() {
   const [expandedProjectId, setExpandedProjectId] = useState<number | null>(null);
-
   const [favoritedProjects, setFavoritedProjects] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
     const savedFavorites = Object.fromEntries(
-      Object.entries(localStorage).map(([key, value]) => {
-        if (key.startsWith("project-favorited-")) {
-          return [Number(key.replace("project-favorited-", "")), value === "true"];
-        }
-        return null;
-      }).filter(Boolean) as [number, boolean][],
+      Object.entries(localStorage)
+        .map(([key, value]) => {
+          if (key.startsWith("project-favorited-")) {
+            return [Number(key.replace("project-favorited-", "")), value === "true"];
+          }
+          return null;
+        })
+        .filter(Boolean) as [number, boolean][],
     );
 
     setFavoritedProjects(savedFavorites);
@@ -79,10 +80,14 @@ export default function ProjectsList() {
         const isFavorited = Boolean(favoritedProjects[project.id]);
 
         return (
-          <li key={project.id} className="w-full">
-            <Card className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/90 p-0 shadow-[0_18px_45px_rgba(2,6,23,0.35)]">
+          <li
+            key={project.id}
+            className="animate-fade-up w-full"
+            style={{ animationDelay: `${index * 0.15}s` }}
+          >
+            <Card className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-0 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/50 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900/80">
               <div className={isReverse ? "flex flex-col lg:flex-row-reverse" : "flex flex-col lg:flex-row"}>
-                <div className="overflow-hidden border-b border-slate-700 bg-slate-200 dark:bg-slate-900 lg:w-[52%] lg:border-b-0 lg:border-r lg:border-slate-700">
+                <div className="overflow-hidden border-b border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-950 lg:w-[52%] lg:border-b-0 lg:border-r">
                   <Image
                     src={project.cardImage}
                     alt={`${project.title} preview`}
@@ -93,42 +98,42 @@ export default function ProjectsList() {
                   />
                 </div>
 
-                <div className="flex flex-1 flex-col gap-3 p-4 md:p-6">
+                <div className="flex flex-1 flex-col gap-3 p-6 sm:p-8">
                   <div className="flex items-center justify-between gap-3">
-                    <h3 className="text-2xl font-bold text-blue-400">{project.title}</h3>
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{project.title}</h3>
                     <button
                       type="button"
                       onClick={() => toggleFavorite(project.id)}
-                      className="flex items-center gap-1 rounded-full border border-slate-700 bg-slate-800 px-2.5 py-1 text-yellow-400 transition hover:border-yellow-400 hover:text-yellow-300"
+                      className="flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1 text-yellow-500 transition hover:border-yellow-400 hover:bg-yellow-50 dark:border-slate-800 dark:bg-slate-800/80 dark:hover:bg-slate-800"
                       aria-label={isFavorited ? `Remove ${project.title} from favorites` : `Add ${project.title} to favorites`}
                     >
-                      <span aria-hidden="true" className="text-base font-medium">
+                      <span aria-hidden="true" className="text-lg">
                         {isFavorited ? "★" : "☆"}
                       </span>
                     </button>
                   </div>
 
-                  <p className="text-base leading-7 text-slate-300">{project.description}</p>
+                  <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">{project.description}</p>
 
-                  {isExpanded ? (
-                    <p className="text-sm leading-6 text-slate-300">{project.details}</p>
-                  ) : null}
+                  {isExpanded && (
+                    <p className="text-sm leading-relaxed text-slate-500 dark:text-slate-400">{project.details}</p>
+                  )}
 
-                  <div className="mt-auto flex flex-wrap gap-3 pt-1">
+                  <div className="mt-auto flex flex-wrap gap-3 pt-3">
                     <button
                       type="button"
                       onClick={() =>
                         setExpandedProjectId((current) => (current === project.id ? null : project.id))
                       }
-                      className="inline-flex items-center justify-center rounded-xl border border-slate-700 bg-slate-800 px-4 py-2.5 text-sm font-medium text-slate-100 transition hover:bg-slate-700"
+                      className="rounded-xl border border-slate-300 bg-transparent px-4 py-2 text-xs font-semibold text-slate-700 transition hover:border-blue-500 hover:text-blue-600 dark:border-slate-700 dark:text-slate-200 dark:hover:border-blue-400 dark:hover:text-blue-400"
                     >
-                      {isExpanded ? "Show less" : "View more"}
+                      {isExpanded ? "Show less" : "View details"}
                     </button>
                     <a
                       href={project.url}
                       target={project.url.startsWith("http") ? "_blank" : undefined}
                       rel={project.url.startsWith("http") ? "noreferrer" : undefined}
-                      className="inline-flex items-center justify-center rounded-xl border border-slate-700 bg-slate-800 px-4 py-2.5 text-sm font-medium text-slate-100 transition hover:bg-slate-700"
+                      className="rounded-xl bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-blue-500"
                     >
                       Visit site
                     </a>
