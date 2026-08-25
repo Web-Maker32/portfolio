@@ -76,9 +76,6 @@ export default function About() {
     <div className="mx-auto max-w-4xl space-y-12">
       {/* Intro Section */}
       <section className="animate-fade-up" style={{ animationDelay: "0s" }}>
-        <p className="mb-3 text-xs font-bold uppercase tracking-[0.25em] text-blue-600 dark:text-blue-400">
-          Background
-        </p>
         <h1 className="mb-4 text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-5xl">
           About Me
         </h1>

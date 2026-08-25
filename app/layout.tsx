@@ -1,20 +1,25 @@
 import type { Metadata } from "next";
-import { Roboto, Geist } from "next/font/google";
-import "./globals.css";
+import { Geist } from "next/font/google";
+import "@/app/globals.css";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import { Providers } from "./providers";
 import { cn } from "@/lib/utils";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
-const roboto = Roboto({ weight: ["400", "700"], subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   title: {
-    template: "%s | Next Blog",
-    default: "Next Blog"
+    template: "%s | Next Portfolio",
+    default: "Next Portfolio",
   },
-  description: "A premium modern blog built with Next.js",
+  description: "A personal portfolio showcasing modern full-stack web work.",
+  openGraph: {
+    title: "Next Portfolio",
+    description: "Full-stack developer portfolio built with Next.js.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -23,16 +28,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("h-full", "font-sans", geist.variable)} suppressHydrationWarning>
-      <body
-        className={`${roboto.className} antialiased min-h-screen flex flex-col bg-slate-950 text-slate-100`}
-      >
+    <html lang="en" className={cn("h-full", geist.variable)} suppressHydrationWarning>
+      <body className="font-sans antialiased min-h-screen flex flex-col bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
         <Providers>
           <Header />
-          <main className="grow container mx-auto px-4 py-8 mt-12">
-            {children}
-          </main>
-
+          <main className="grow container mx-auto px-4 py-8">{children}</main>
           <Footer />
         </Providers>
       </body>

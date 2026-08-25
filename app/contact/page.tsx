@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useRef } from "react";
 import { useFormStatus } from "react-dom";
-import { submitWebsiteInquiry } from "./action";
+import { submitWebsiteInquiry, type ActionState } from "./actions";
 
 const SubmitButton = () => {
   const { pending } = useFormStatus();
@@ -20,10 +20,13 @@ const SubmitButton = () => {
 
 export default function ContactPage() {
   const formRef = useRef<HTMLFormElement>(null);
-  const [state, formAction] = useActionState(submitWebsiteInquiry, {
+  const initialState: ActionState = {
     success: false,
     error: null,
-  });
+    fieldErrors: {},
+  };
+
+  const [state, formAction] = useActionState(submitWebsiteInquiry, initialState);
 
   useEffect(() => {
     if (state.success) {
@@ -42,7 +45,7 @@ export default function ContactPage() {
           Build Your Custom Website
         </h1>
         <p className="mt-3 text-lg text-slate-600 dark:text-slate-400">
-          Fill out your project details below to get a estimate and project breakdown for your new website.
+          Fill out your project details below to get an estimate and project breakdown for your new website.
         </p>
       </div>
 
@@ -51,6 +54,7 @@ export default function ContactPage() {
         <form
           ref={formRef}
           action={formAction}
+          noValidate
           className="space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:border-blue-500/50 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900/80 sm:p-8"
         >
           {/* Name & Email Row */}
@@ -63,10 +67,16 @@ export default function ContactPage() {
                 type="text"
                 id="name"
                 name="name"
-                required
-                className="w-full rounded-xl border border-slate-300 bg-transparent px-4 py-2.5 text-slate-900 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
+                className={`w-full rounded-xl border bg-transparent px-4 py-2.5 text-slate-900 transition focus:outline-none focus:ring-2 dark:text-white ${
+                  state?.fieldErrors?.name
+                    ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500/20"
+                    : "border-slate-300 focus:border-blue-500 focus:ring-blue-500/20 dark:border-slate-700 dark:focus:border-blue-400"
+                }`}
                 placeholder="Jane Doe"
               />
+              {state?.fieldErrors?.name && (
+                <p className="mt-1 text-xs font-medium text-rose-500">{state.fieldErrors.name}</p>
+              )}
             </div>
 
             <div>
@@ -77,10 +87,16 @@ export default function ContactPage() {
                 type="email"
                 id="email"
                 name="email"
-                required
-                className="w-full rounded-xl border border-slate-300 bg-transparent px-4 py-2.5 text-slate-900 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
+                className={`w-full rounded-xl border bg-transparent px-4 py-2.5 text-slate-900 transition focus:outline-none focus:ring-2 dark:text-white ${
+                  state?.fieldErrors?.email
+                    ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500/20"
+                    : "border-slate-300 focus:border-blue-500 focus:ring-blue-500/20 dark:border-slate-700 dark:focus:border-blue-400"
+                }`}
                 placeholder="jane@example.com"
               />
+              {state?.fieldErrors?.email && (
+                <p className="mt-1 text-xs font-medium text-rose-500">{state.fieldErrors.email}</p>
+              )}
             </div>
           </div>
 
@@ -93,15 +109,24 @@ export default function ContactPage() {
               <select
                 id="websiteType"
                 name="websiteType"
-                required
-                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
+                className={`w-full rounded-xl border bg-white px-4 py-2.5 text-slate-900 transition focus:outline-none focus:ring-2 dark:bg-slate-900 dark:text-white ${
+                  state?.fieldErrors?.websiteType
+                    ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500/20"
+                    : "border-slate-300 focus:border-blue-500 focus:ring-blue-500/20 dark:border-slate-700 dark:focus:border-blue-400"
+                }`}
               >
                 <option value="">Select type</option>
-                <option value="Landing Page">Landing Page</option>
-                <option value="Portfolio">Portfolio</option>
-                <option value="Blog / News">Blog / News</option>
-                <option value="Web Application">Web Application</option>
+                <option value="Single Landing Page">Single Landing Page</option>
+                <option value="Personal / Developer Portfolio">Personal / Portfolio</option>
+                <option value="Business / Corporate Site">Business / Corporate</option>
+                <option value="Blog / News / Publication">Blog / News Site</option>
+                <option value="E-Commerce Store">E-Commerce Store</option>
+                <option value="Web App / Full SaaS">Web Application / SaaS</option>
+                <option value="Custom API / Backend Integration">Backend / API Service</option>
               </select>
+              {state?.fieldErrors?.websiteType && (
+                <p className="mt-1 text-xs font-medium text-rose-500">{state.fieldErrors.websiteType}</p>
+              )}
             </div>
 
             <div>
@@ -111,15 +136,22 @@ export default function ContactPage() {
               <select
                 id="budget"
                 name="budget"
-                required
-                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
+                className={`w-full rounded-xl border bg-white px-4 py-2.5 text-slate-900 transition focus:outline-none focus:ring-2 dark:bg-slate-900 dark:text-white ${
+                  state?.fieldErrors?.budget
+                    ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500/20"
+                    : "border-slate-300 focus:border-blue-500 focus:ring-blue-500/20 dark:border-slate-700 dark:focus:border-blue-400"
+                }`}
               >
                 <option value="">Select budget</option>
-                <option value="<$300">&lt; $300</option>
-                <option value="$300 - $800">$300 - $800</option>
-                <option value="$800 - $1500">$800 - $1,500</option>
-                <option value="$1500+">$1,500+</option>
+                <option value="Under ₨25,000">Under ₨25,000 (~$90)</option>
+                <option value="₨25,000 - ₨50,000">₨25,000 - ₨50,000 (~$180)</option>
+                <option value="₨50,000 - ₨100,000">₨50,000 - ₨100,000 (~$360)</option>
+                <option value="₨100,000 - ₨250,000">₨100,000 - ₨250,000 (~$900)</option>
+                <option value="₨250,000+">₨250,000+ ($900+)</option>
               </select>
+              {state?.fieldErrors?.budget && (
+                <p className="mt-1 text-xs font-medium text-rose-500">{state.fieldErrors.budget}</p>
+              )}
             </div>
 
             <div>
@@ -129,14 +161,21 @@ export default function ContactPage() {
               <select
                 id="timeline"
                 name="timeline"
-                required
-                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
+                className={`w-full rounded-xl border bg-white px-4 py-2.5 text-slate-900 transition focus:outline-none focus:ring-2 dark:bg-slate-900 dark:text-white ${
+                  state?.fieldErrors?.timeline
+                    ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500/20"
+                    : "border-slate-300 focus:border-blue-500 focus:ring-blue-500/20 dark:border-slate-700 dark:focus:border-blue-400"
+                }`}
               >
                 <option value="">Select timeline</option>
+                <option value="Urgent (< 1 Week)">Urgent (&lt; 1 Week)</option>
                 <option value="1-2 Weeks">1 - 2 Weeks</option>
                 <option value="2-4 Weeks">2 - 4 Weeks</option>
                 <option value="1+ Month">1+ Month</option>
               </select>
+              {state?.fieldErrors?.timeline && (
+                <p className="mt-1 text-xs font-medium text-rose-500">{state.fieldErrors.timeline}</p>
+              )}
             </div>
           </div>
 
@@ -148,11 +187,17 @@ export default function ContactPage() {
             <textarea
               id="description"
               name="description"
-              required
               rows={4}
-              className="w-full rounded-xl border border-slate-300 bg-transparent px-4 py-2.5 text-slate-900 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
-              placeholder="Describe what your website should do, required pages, and any design references you have in mind..."
+              className={`w-full rounded-xl border bg-transparent px-4 py-2.5 text-slate-900 transition focus:outline-none focus:ring-2 dark:text-white ${
+                state?.fieldErrors?.description
+                  ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500/20"
+                  : "border-slate-300 focus:border-blue-500 focus:ring-blue-500/20 dark:border-slate-700 dark:focus:border-blue-400"
+              }`}
+              placeholder="Describe what your website should do, required pages, desired tech stack, and any design references you have in mind..."
             />
+            {state?.fieldErrors?.description && (
+              <p className="mt-1 text-xs font-medium text-rose-500">{state.fieldErrors.description}</p>
+            )}
           </div>
 
           <SubmitButton />
@@ -164,7 +209,7 @@ export default function ContactPage() {
             </div>
           )}
 
-          {state?.error && (
+          {state?.error && !state?.fieldErrors && (
             <div className="animate-fade-up rounded-xl border border-rose-500/20 bg-rose-500/10 p-3 text-center text-sm font-medium text-rose-600 dark:text-rose-400">
               {state.error}
             </div>
