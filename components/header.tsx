@@ -34,11 +34,11 @@ function ThemeToggle() {
     <button
       type="button"
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="rounded-xl border border-slate-300 p-2 text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+      className="rounded-xl p-2 text-slate-200 transition hover:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
       {isDark ? (
-        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <svg className="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -46,7 +46,7 @@ function ThemeToggle() {
           />
         </svg>
       ) : (
-        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <svg className="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"

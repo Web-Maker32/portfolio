@@ -72,7 +72,7 @@ export default function ContactPage() {
                     ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500/20"
                     : "border-slate-300 focus:border-blue-500 focus:ring-blue-500/20 dark:border-slate-700 dark:focus:border-blue-400"
                 }`}
-                placeholder="Jane Doe"
+                placeholder="User Name"
               />
               {state?.fieldErrors?.name && (
                 <p className="mt-1 text-xs font-medium text-rose-500">{state.fieldErrors.name}</p>
@@ -92,7 +92,7 @@ export default function ContactPage() {
                     ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500/20"
                     : "border-slate-300 focus:border-blue-500 focus:ring-blue-500/20 dark:border-slate-700 dark:focus:border-blue-400"
                 }`}
-                placeholder="jane@example.com"
+                placeholder="username@example.com"
               />
               {state?.fieldErrors?.email && (
                 <p className="mt-1 text-xs font-medium text-rose-500">{state.fieldErrors.email}</p>
