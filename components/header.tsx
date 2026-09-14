@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 
 const links = [
   { href: "/", label: "Home" },
@@ -20,25 +20,29 @@ function isActivePath(pathname: string, href: string) {
 
 function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   if (!mounted) {
-    return <span className="inline-block h-9 w-9 rounded-xl border border-slate-700" />;
+    return (
+      <span className="inline-block h-9 w-9 rounded-xl border border-slate-300 dark:border-slate-700" />
+    );
   }
-
-  const isDark = resolvedTheme === "dark";
 
   return (
     <button
       type="button"
-      onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="rounded-xl p-2 text-slate-200 transition hover:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
-      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+      className="rounded-xl p-2 text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+      aria-label={
+        resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+      }
     >
-      {isDark ? (
-        <svg className="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      {resolvedTheme === "dark" ? (
+        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -46,7 +50,7 @@ function ThemeToggle() {
           />
         </svg>
       ) : (
-        <svg className="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -77,47 +81,45 @@ export default function Header() {
     };
   }, [open]);
 
+  const linkClass = (active: boolean) =>
+    `rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
+      active
+        ? "bg-blue-600 text-white shadow-sm"
+        : "text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+    }`;
+
+  const iconBtnClass =
+    "rounded-xl p-2 text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800";
+
   return (
     <>
-      <header
-        className="sticky top-0 z-50 border-b border-slate-200 px-4 py-4 dark:border-slate-800 md:px-8"
-        style={{ backgroundColor: "var(--header-bg, #020617)" }}
-      >
+      <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/80 px-4 py-4 backdrop-blur dark:border-slate-800 dark:bg-slate-950/80 md:px-8">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
           <Link
             href="/"
-            className="text-xl font-black tracking-tighter text-white transition-opacity hover:opacity-80"
+            className="text-xl font-black tracking-tighter text-slate-900 transition-opacity hover:opacity-80 dark:text-white"
           >
             Next Portfolio
           </Link>
 
-          {/* Desktop nav */}
           <nav className="hidden items-center gap-2 md:flex">
-            {links.map((link) => {
-              const active = isActivePath(pathname, link.href);
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
-                    active
-                      ? "bg-blue-600 text-white shadow-sm"
-                      : "text-slate-300 hover:bg-slate-800 hover:text-white"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={linkClass(isActivePath(pathname, link.href))}
+              >
+                {link.label}
+              </Link>
+            ))}
             <ThemeToggle />
           </nav>
 
-          {/* Mobile controls */}
           <div className="flex items-center gap-2 md:hidden">
             <ThemeToggle />
             <button
               type="button"
-              className="rounded-xl p-2 text-slate-200 transition hover:bg-slate-800"
+              className={iconBtnClass}
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-label={open ? "Close menu" : "Open menu"}
@@ -140,7 +142,6 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Backdrop — outside header so nothing clips it */}
       {open && (
         <div
           className="fixed inset-0 z-[100] md:hidden"
@@ -150,7 +151,6 @@ export default function Header() {
         />
       )}
 
-      {/* Drawer — solid panel, outside header */}
       <aside
         className={`fixed inset-y-0 left-0 z-[110] flex w-72 flex-col md:hidden ${
           open ? "translate-x-0" : "-translate-x-full"

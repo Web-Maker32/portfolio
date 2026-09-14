@@ -3,7 +3,12 @@
 import { useEffect, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 
-export default function Error({ error, reset }) {
+type ErrorProps = {
+    error: Error & { digest?: string }
+    reset: () => void
+}
+
+export default function Error({ error, reset }: ErrorProps) {
     const router = useRouter()
     const [isPending, startTransition] = useTransition()
 

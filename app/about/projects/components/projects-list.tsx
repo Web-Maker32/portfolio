@@ -1,18 +1,39 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import Card from "@/components/card";
 import { projectCategories, projects } from "@/data/projects";
 
-export default function ProjectsList() {
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [expandedProjectId, setExpandedProjectId] = useState<number | null>(null);
-  const [favoritedProjects, setFavoritedProjects] = useState<Record<number, boolean>>({});
+const favoritesChangeEvent = "project-favorites-change";
+const projectsStorageKey = "portfolio-projects";
+const projectsChangeEvent = "portfolio-projects-change";
 
-  useEffect(() => {
-    try {
-      const savedFavorites = Object.fromEntries(
+function getProjectsSnapshot() {
+  if (typeof window === "undefined") return JSON.stringify(projects);
+
+  try {
+    return localStorage.getItem(projectsStorageKey) ?? JSON.stringify(projects);
+  } catch {
+    return JSON.stringify(projects);
+  }
+}
+
+function subscribeToProjects(onChange: () => void) {
+  window.addEventListener("storage", onChange);
+  window.addEventListener(projectsChangeEvent, onChange);
+  return () => {
+    window.removeEventListener("storage", onChange);
+    window.removeEventListener(projectsChangeEvent, onChange);
+  };
+}
+
+function getFavoritesSnapshot() {
+  if (typeof window === "undefined") return "{}";
+
+  try {
+    return JSON.stringify(
+      Object.fromEntries(
         Object.entries(localStorage)
           .map(([key, value]) => {
             if (key.startsWith("project-favorited-")) {
@@ -21,30 +42,52 @@ export default function ProjectsList() {
             return null;
           })
           .filter(Boolean) as [number, boolean][],
-      );
-      setFavoritedProjects(savedFavorites);
-    } catch {
-      // private mode / blocked storage
-    }
-  }, []);
+      ),
+    );
+  } catch {
+    return "{}";
+  }
+}
+
+function subscribeToFavorites(onChange: () => void) {
+  window.addEventListener("storage", onChange);
+  window.addEventListener(favoritesChangeEvent, onChange);
+  return () => {
+    window.removeEventListener("storage", onChange);
+    window.removeEventListener(favoritesChangeEvent, onChange);
+  };
+}
+
+export default function ProjectsList() {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [expandedProjectId, setExpandedProjectId] = useState<number | null>(null);
+  const projectsSnapshot = useSyncExternalStore(
+    subscribeToProjects,
+    getProjectsSnapshot,
+    () => JSON.stringify(projects),
+  );
+  const visibleProjects = JSON.parse(projectsSnapshot) as typeof projects;
+  const favoritesSnapshot = useSyncExternalStore(
+    subscribeToFavorites,
+    getFavoritesSnapshot,
+    () => "{}",
+  );
+  const favoritedProjects = JSON.parse(favoritesSnapshot) as Record<number, boolean>;
 
   const toggleFavorite = (projectId: number) => {
     const nextFavorited = !favoritedProjects[projectId];
-    setFavoritedProjects((current) => ({
-      ...current,
-      [projectId]: nextFavorited,
-    }));
     try {
       localStorage.setItem(`project-favorited-${projectId}`, String(nextFavorited));
     } catch {
       // ignore
     }
+    window.dispatchEvent(new Event(favoritesChangeEvent));
   };
 
   const filteredProjects =
     selectedCategory === "All"
-      ? projects
-      : projects.filter((p) => p.category === selectedCategory);
+      ? visibleProjects
+      : visibleProjects.filter((p) => p.category === selectedCategory);
 
   return (
     <div className="space-y-6">

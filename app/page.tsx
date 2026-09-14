@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import Card from "@/components/card";
 import { projects } from "@/data/projects";
 
@@ -13,17 +14,18 @@ export default function Home() {
   return (
     <div className="space-y-10">
       {/* Hero */}
-      <section className="animate-fade-up rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 hover:border-blue-500/50 hover:shadow-md dark:border-slate-800 dark:bg-slate-900/80 sm:p-10">
-        <p className="mb-3 text-xs font-bold uppercase tracking-[0.25em] text-blue-600 dark:text-blue-400">
-          Portfolio
-        </p>
-        <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-5xl sm:leading-tight">
-          Hi, I’m a full-stack developer building modern web experiences.
-        </h1>
-        <p className="mt-4 max-w-2xl text-lg text-slate-600 dark:text-slate-300">
-          I design and ship polished web applications with clean UI, strong performance, and maintainable code.
-        </p>
-        <div className="mt-8 flex flex-wrap gap-3">
+      <section className="animate-fade-up grid overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900/80 lg:grid-cols-[1.15fr_0.85fr]">
+        <div className="p-8 sm:p-10 lg:p-12">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.25em] text-cyan-700 dark:text-cyan-300">
+            Website builder
+          </p>
+          <h1 className="max-w-3xl text-4xl font-black tracking-tight text-slate-950 dark:text-white sm:text-5xl sm:leading-tight">
+            I build modern websites that make a strong first impression.
+          </h1>
+          <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
+            Responsive, polished websites for personal brands, businesses, and people ready to bring an idea online.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
           <Link
             href="/about"
             className="rounded-xl bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-500/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-blue-500 active:translate-y-0"
@@ -42,6 +44,26 @@ export default function Home() {
           >
             Hire me
           </Link>
+          </div>
+          <div className="mt-8 flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
+            <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 shadow-[0_0_0_4px_rgba(16,185,129,0.12)]" />
+            Available for new website projects
+          </div>
+        </div>
+        <div className="relative min-h-64 overflow-hidden bg-slate-950 lg:min-h-full">
+          <Image
+            src={featured?.cardImage ?? "/projects/Screenshot%202026-08-11%20182448.png"}
+            alt="Featured project preview"
+            fill
+            sizes="(min-width: 1024px) 40vw, 100vw"
+            className="object-cover opacity-80 transition duration-700 hover:scale-105"
+            unoptimized
+          />
+          <div className="absolute inset-0 bg-gradient-to-tr from-slate-950/80 via-slate-950/10 to-cyan-400/20" />
+          <div className="absolute bottom-6 left-6 right-6 text-white">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">Latest highlight</p>
+            <p className="mt-1 text-xl font-bold">{featured?.title ?? "Selected work"}</p>
+          </div>
         </div>
       </section>
 
