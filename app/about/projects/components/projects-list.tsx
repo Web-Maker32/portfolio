@@ -131,7 +131,7 @@ export default function ProjectsList() {
                       isReverse ? "flex flex-col lg:flex-row-reverse" : "flex flex-col lg:flex-row"
                     }
                   >
-                    <div className="overflow-hidden border-b border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-950 lg:w-[52%] lg:border-b-0 lg:border-r">
+                    <div className="overflow-hidden border-b border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-950 lg:w-[52%] lg:border-b-0 lg:border-r">
                       <Image
                         src={project.cardImage}
                         alt={`${project.title} preview`}

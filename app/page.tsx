@@ -50,7 +50,7 @@ export default function Home() {
             Available for new website projects
           </div>
         </div>
-        <div className="relative min-h-64 overflow-hidden bg-slate-100 dark:bg-slate-950 lg:min-h-full">
+        <div className="relative min-h-64 overflow-hidden bg-white dark:bg-slate-950 lg:min-h-full">
           <Image
             src={featured?.cardImage ?? "/projects/Screenshot%202026-08-11%20182448.png"}
             alt="Featured project preview"
