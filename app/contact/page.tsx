@@ -75,7 +75,7 @@ export default function ContactPage() {
                 placeholder="User Name"
               />
               {state?.fieldErrors?.name && (
-                <p className="mt-1 text-xs font-medium text-rose-500">{state.fieldErrors.name}</p>
+                <p className="mt-1 text-xs font-medium text-rose-500 dark:text-rose-400">{state.fieldErrors.name}</p>
               )}
             </div>
 
@@ -95,7 +95,7 @@ export default function ContactPage() {
                 placeholder="username@example.com"
               />
               {state?.fieldErrors?.email && (
-                <p className="mt-1 text-xs font-medium text-rose-500">{state.fieldErrors.email}</p>
+                <p className="mt-1 text-xs font-medium text-rose-500 dark:text-rose-400">{state.fieldErrors.email}</p>
               )}
             </div>
           </div>
@@ -125,7 +125,7 @@ export default function ContactPage() {
                 <option value="Custom API / Backend Integration">Backend / API Service</option>
               </select>
               {state?.fieldErrors?.websiteType && (
-                <p className="mt-1 text-xs font-medium text-rose-500">{state.fieldErrors.websiteType}</p>
+                <p className="mt-1 text-xs font-medium text-rose-500 dark:text-rose-400">{state.fieldErrors.websiteType}</p>
               )}
             </div>
 
@@ -150,7 +150,7 @@ export default function ContactPage() {
                 <option value="₨250,000+">₨250,000+ ($900+)</option>
               </select>
               {state?.fieldErrors?.budget && (
-                <p className="mt-1 text-xs font-medium text-rose-500">{state.fieldErrors.budget}</p>
+                <p className="mt-1 text-xs font-medium text-rose-500 dark:text-rose-400">{state.fieldErrors.budget}</p>
               )}
             </div>
 
@@ -174,7 +174,7 @@ export default function ContactPage() {
                 <option value="1+ Month">1+ Month</option>
               </select>
               {state?.fieldErrors?.timeline && (
-                <p className="mt-1 text-xs font-medium text-rose-500">{state.fieldErrors.timeline}</p>
+                <p className="mt-1 text-xs font-medium text-rose-500 dark:text-rose-400">{state.fieldErrors.timeline}</p>
               )}
             </div>
           </div>
@@ -196,7 +196,7 @@ export default function ContactPage() {
               placeholder="Describe what your website should do, required pages, desired tech stack, and any design references you have in mind..."
             />
             {state?.fieldErrors?.description && (
-              <p className="mt-1 text-xs font-medium text-rose-500">{state.fieldErrors.description}</p>
+              <p className="mt-1 text-xs font-medium text-rose-500 dark:text-rose-400">{state.fieldErrors.description}</p>
             )}
           </div>
 

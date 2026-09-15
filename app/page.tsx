@@ -50,7 +50,7 @@ export default function Home() {
             Available for new website projects
           </div>
         </div>
-        <div className="relative min-h-64 overflow-hidden bg-slate-950 lg:min-h-full">
+        <div className="relative min-h-64 overflow-hidden bg-slate-100 dark:bg-slate-950 lg:min-h-full">
           <Image
             src={featured?.cardImage ?? "/projects/Screenshot%202026-08-11%20182448.png"}
             alt="Featured project preview"
@@ -59,9 +59,9 @@ export default function Home() {
             className="object-cover opacity-80 transition duration-700 hover:scale-105"
             unoptimized
           />
-          <div className="absolute inset-0 bg-gradient-to-tr from-slate-950/80 via-slate-950/10 to-cyan-400/20" />
-          <div className="absolute bottom-6 left-6 right-6 text-white">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">Latest highlight</p>
+          <div className="absolute inset-0 bg-gradient-to-tr from-white/80 via-white/10 to-cyan-400/20 dark:from-slate-950/80 dark:via-slate-950/10" />
+          <div className="absolute bottom-6 left-6 right-6 text-slate-950 dark:text-white">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-cyan-700 dark:text-cyan-200">Latest highlight</p>
             <p className="mt-1 text-xl font-bold">{featured?.title ?? "Selected work"}</p>
           </div>
         </div>

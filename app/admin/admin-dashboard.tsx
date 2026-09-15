@@ -115,22 +115,22 @@ export default function AdminDashboard() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-8">
-      <section className="overflow-hidden rounded-[2rem] bg-slate-950 px-6 py-8 text-white shadow-xl shadow-slate-950/10 sm:px-10 sm:py-10">
+      <section className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white px-6 py-8 text-slate-950 shadow-xl shadow-slate-950/10 dark:border-slate-800 dark:bg-slate-950 dark:text-white sm:px-10 sm:py-10">
         <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
           <div className="max-w-2xl">
             <p className="mb-3 text-xs font-bold uppercase tracking-[0.28em] text-cyan-300">Portfolio studio</p>
             <h1 className="text-4xl font-black tracking-tight sm:text-5xl">Shape the work people remember.</h1>
-            <p className="mt-4 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
+            <p className="mt-4 max-w-xl text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">
               Keep your project story sharp, your featured work current, and your next launch ready to publish.
             </p>
           </div>
           <div className="flex items-center gap-4">
-            <div className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-sm text-slate-300">
-              <span className="block text-xs uppercase tracking-wider text-slate-500">Workspace mode</span>
-              <span className="mt-1 block font-semibold text-white">Local content studio</span>
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-sm text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
+              <span className="block text-xs uppercase tracking-wider text-slate-500 dark:text-slate-500">Workspace mode</span>
+              <span className="mt-1 block font-semibold text-slate-950 dark:text-white">Local content studio</span>
             </div>
             <form action={logoutAdmin}>
-              <button type="submit" className="rounded-xl border border-white/15 px-4 py-3 text-sm font-bold text-slate-200 transition hover:bg-white/10">Log out</button>
+              <button type="submit" className="rounded-xl border border-slate-300 px-4 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-100 dark:border-white/15 dark:text-slate-200 dark:hover:bg-white/10">Log out</button>
             </form>
           </div>
         </div>
@@ -199,7 +199,7 @@ export default function AdminDashboard() {
               <article key={project.id} className="grid gap-3 px-5 py-5 sm:grid-cols-[1fr_130px_110px_100px] sm:items-center sm:gap-4">
                 <div>
                   <h3 className="font-bold text-slate-950 dark:text-white">{project.title}</h3>
-                  <p className="mt-1 line-clamp-1 text-sm text-slate-500">{project.description}</p>
+                  <p className="mt-1 line-clamp-1 text-sm text-slate-500 dark:text-slate-400">{project.description}</p>
                 </div>
                 <span className="w-fit rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{project.category}</span>
                 <button type="button" onClick={() => toggleFeatured(project)} className={`w-fit rounded-full px-2.5 py-1 text-xs font-bold ${project.featured ? "bg-cyan-100 text-cyan-700 dark:bg-cyan-950/50 dark:text-cyan-300" : "bg-slate-100 text-slate-500 dark:bg-slate-800"}`}>
@@ -213,7 +213,7 @@ export default function AdminDashboard() {
             ))}
           </div>
         </div>
-        <p className="text-xs leading-5 text-slate-500">This studio currently saves changes in this browser only. Connect Supabase Auth, a projects table, and row-level security before using it as a shared production admin.</p>
+        <p className="text-xs leading-5 text-slate-500 dark:text-slate-400">This studio currently saves changes in this browser only. Connect Supabase Auth, a projects table, and row-level security before using it as a shared production admin.</p>
       </section>
     </div>
   );
@@ -222,9 +222,9 @@ export default function AdminDashboard() {
 function Metric({ label, value, detail }: { label: string; value: number; detail: string }) {
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900/70">
-      <p className="text-xs font-bold uppercase tracking-wider text-slate-500">{label}</p>
+      <p className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">{label}</p>
       <p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{value}</p>
-      <p className="mt-1 text-sm text-slate-500">{detail}</p>
+      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{detail}</p>
     </div>
   );
 }
