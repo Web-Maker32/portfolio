@@ -131,13 +131,13 @@ export default function ProjectsList() {
                       isReverse ? "flex flex-col lg:flex-row-reverse" : "flex flex-col lg:flex-row"
                     }
                   >
-                    <div className="overflow-hidden border-b border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-950 lg:w-[52%] lg:border-b-0 lg:border-r">
+                    <div className="overflow-hidden border-b border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-950 lg:w-[52%] lg:border-b-0 lg:border-r">
                       <Image
                         src={project.cardImage}
                         alt={`${project.title} preview`}
                         width={800}
                         height={500}
-                        className="h-auto w-full object-contain sm:h-64 lg:h-full lg:w-full lg:object-cover"
+                        className="h-auto w-full rounded-xl border border-slate-200 bg-white object-contain shadow-sm sm:h-64 lg:h-full lg:w-full lg:object-cover dark:border-slate-800 dark:bg-slate-900 dark:shadow-black/20"
                         unoptimized={project.cardImage.startsWith("/projects/")}
                       />
                     </div>
