@@ -14,7 +14,7 @@ export type Project = {
   featured?: boolean;
 };
 
-const financeImage = "/projects/Screenshot%202026-08-11%20182448.png";
+const financeImage = "/projects/next-finance-current.png";
 const portfolioImage = "/projects/Screenshot%202026-08-11%20125659.png";
 
 export const projects: Project[] = [
