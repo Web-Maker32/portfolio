@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState, useSyncExternalStore } from "react";
 import Card from "@/components/card";
 import { projectCategories, projects } from "@/data/projects";
+import ThemeImage from "@/components/ThemeImage";
 
 const favoritesChangeEvent = "project-favorites-change";
 const projectsStorageKey = "portfolio-projects";
@@ -132,15 +133,15 @@ export default function ProjectsList() {
                     }
                   >
                     <div className="overflow-hidden border-b border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-950 lg:w-[52%] lg:border-b-0 lg:border-r">
-                      <Image
-                        src={project.cardImage}
-                        alt={`${project.title} preview`}
-                        width={800}
-                        height={500}
-                        className="h-auto w-full rounded-xl border border-slate-200 bg-white object-contain shadow-sm sm:h-64 lg:h-full lg:w-full lg:object-cover dark:border-slate-800 dark:bg-slate-900 dark:shadow-black/20"
-                        unoptimized={project.cardImage.startsWith("/projects/")}
-                      />
-                    </div>
+  <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-900">
+    <ThemeImage
+      lightSrc={project.cardImage}
+      darkSrc={project.cardImageDark}
+      alt={`${project.title} preview`}
+      sizes="(min-width: 1024px) 50vw, 100vw"
+    />
+  </div>
+</div>
 
                     <div className="flex flex-1 flex-col gap-3 p-6 sm:p-8">
                       <div className="flex items-center justify-between gap-3">
