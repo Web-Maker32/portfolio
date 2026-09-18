@@ -1,8 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
 import Card from "@/components/card";
-import { projects } from "@/data/projects";
 import ThemeImage from "@/components/ThemeImage";
+import { projects } from "@/data/projects";
 
 export const metadata = {
   title: "Home",
@@ -53,22 +52,17 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="relative overflow-hidden bg-slate-950 p-3 lg:min-h-full">
-          <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-900">
-  <ThemeImage
-    lightSrc={featured.cardImage}
-    darkSrc={featured.cardImageDark}
-    alt={`${featured.title} preview`}
-    sizes="(min-width: 1024px) 40vw, 100vw"
-    priority
-  />
-</div>
-          <div className="pointer-events-none absolute inset-3 rounded-xl bg-gradient-to-tr from-white/70 via-white/5 to-cyan-400/15 dark:from-slate-950/70 dark:via-transparent" />
-          <div className="absolute bottom-8 left-8 right-8 text-white">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">
-              Latest highlight
-            </p>
-            <p className="mt-1 text-xl font-bold">{featured?.title ?? "Selected work"}</p>
+        <div className="bg-slate-100 p-3 dark:bg-slate-950">
+          <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-slate-200 bg-slate-200 dark:border-slate-800 dark:bg-slate-900">
+            {featured ? (
+              <ThemeImage
+                lightSrc={featured.cardImageLight}
+                darkSrc={featured.cardImageDark}
+                alt={`${featured.title} preview`}
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                priority
+              />
+            ) : null}
           </div>
         </div>
       </section>

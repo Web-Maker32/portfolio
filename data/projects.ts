@@ -10,7 +10,7 @@ export type Project = {
   url: string;
   githubUrl: string;
   previewImage: string;
-  cardImage: string;
+  cardImageLight?: string;
   cardImageDark?: string;
   featured?: boolean;
 };
@@ -19,10 +19,6 @@ const financeLight = "/projects/next-finance-thumb-light.png";
 const financeDark = "/projects/next-finance-thumb-dark.png";
 const portfolioLight = "/projects/portfolio-thumb-light.png";
 const portfolioDark = "/projects/portfolio-thumb-dark.png";
-
-
-const financeImage = "/projects/next-finance-current.png";
-const portfolioImage = "/projects/Screenshot%202026-08-11%20125659.png";
 
 export const projects: Project[] = [
   {
@@ -37,7 +33,8 @@ export const projects: Project[] = [
     url: "https://next-finance-steel.vercel.app",
     githubUrl: "https://github.com/Web-Maker32/next-finance",
     previewImage: "/projects/next-finance-thumb.png",
-    cardImage: "/projects/next-finance-thumb.png",
+    cardImageLight: financeLight,
+    cardImageDark: financeDark,
     featured: true,
   },
   {
@@ -52,7 +49,8 @@ export const projects: Project[] = [
     url: "/",
     githubUrl: "https://github.com/Web-Maker32/portfolio",
     previewImage: "/projects/portfoliio.png",
-    cardImage: "/projects/portfolio.png",
+    cardImageLight: portfolioLight,
+    cardImageDark: portfolioDark,
     featured: false,
   },
 ];

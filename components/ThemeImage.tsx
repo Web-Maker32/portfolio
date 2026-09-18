@@ -5,7 +5,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 type ThemeImageProps = {
-  lightSrc: string;
+  lightSrc?: string;
   darkSrc?: string;
   alt: string;
   sizes: string;
@@ -27,6 +27,8 @@ export default function ThemeImage({
   useEffect(() => setMounted(true), []);
 
   const src = mounted && resolvedTheme === "dark" && darkSrc ? darkSrc : lightSrc;
+
+  if (!src) return null;
 
   return (
     <Image

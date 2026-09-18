@@ -135,7 +135,7 @@ export default function ProjectsList() {
                     <div className="overflow-hidden border-b border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-950 lg:w-[52%] lg:border-b-0 lg:border-r">
   <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-900">
     <ThemeImage
-      lightSrc={project.cardImage}
+      lightSrc={project.cardImageLight}
       darkSrc={project.cardImageDark}
       alt={`${project.title} preview`}
       sizes="(min-width: 1024px) 50vw, 100vw"
