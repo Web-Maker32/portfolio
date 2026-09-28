@@ -16,7 +16,8 @@ const emptyProject: Omit<Project, "id"> = {
   url: "",
   githubUrl: "",
   previewImage: "",
-  cardImage: "",
+  cardImageLight: "",
+  cardImageDark: "",
   featured: false,
 };
 
@@ -67,31 +68,45 @@ export default function AdminDashboard() {
   };
 
   const addProject = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!form.title.trim() || !form.description.trim() || !form.url.trim()) return;
+  event.preventDefault();
+  if (!form.title.trim() || !form.description.trim() || !form.url.trim()) return;
 
-    const nextProject: Project = {
-      ...form,
-      id: editingProjectId ?? Math.max(0, ...projects.map((project) => project.id)) + 1,
-      title: form.title.trim(),
-      description: form.description.trim(),
-      details: form.details.trim() || form.description.trim(),
-      tags: form.tags,
-      previewImage: form.previewImage.trim() || "/projects/Screenshot%202026-08-11%20182448.png",
-      cardImage: form.cardImage.trim() || form.previewImage.trim() || "/projects/Screenshot%202026-08-11%20182448.png",
-      url: form.url.trim(),
-      githubUrl: form.githubUrl.trim(),
-    };
+  const preview =
+    form.previewImage.trim() ||
+    (form.cardImageLight ?? "").trim() ||
+    "/projects/portfolio.png";
+  const light =
+    (form.cardImageLight ?? "").trim() ||
+    form.previewImage.trim() ||
+    "/projects/portfolio-thumb-light.png";
+  const dark =
+    (form.cardImageDark ?? "").trim() ||
+    light ||
+    "/projects/portfolio-thumb-dark.png";
 
-    saveProjects(
-      editingProjectId === null
-        ? [...projects, nextProject]
-        : projects.map((project) => (project.id === editingProjectId ? nextProject : project)),
-    );
-    setForm(emptyProject);
-    setEditingProjectId(null);
-    setShowForm(false);
+  const nextProject: Project = {
+    ...form,
+    id: editingProjectId ?? Math.max(0, ...projects.map((p) => p.id)) + 1,
+    title: form.title.trim(),
+    description: form.description.trim(),
+    details: form.details.trim() || form.description.trim(),
+    tags: form.tags,
+    previewImage: preview,
+    cardImageLight: light,
+    cardImageDark: dark,
+    url: form.url.trim(),
+    githubUrl: form.githubUrl.trim(),
   };
+
+  saveProjects(
+    editingProjectId === null
+      ? [...projects, nextProject]
+      : projects.map((p) => (p.id === editingProjectId ? nextProject : p)),
+  );
+  setForm(emptyProject);
+  setEditingProjectId(null);
+  setShowForm(false);
+};
 
   const editProject = (project: Project) => {
     setForm({ ...project });
@@ -162,7 +177,21 @@ export default function AdminDashboard() {
             <Field label="Project name" value={form.title} onChange={(value) => updateForm("title", value)} required />
             <Field label="Live URL" value={form.url} onChange={(value) => updateForm("url", value)} required />
             <Field label="GitHub URL" value={form.githubUrl} onChange={(value) => updateForm("githubUrl", value)} />
-            <Field label="Preview image URL" value={form.cardImage} onChange={(value) => updateForm("cardImage", value)} />
+           <Field
+  label="Preview image URL"
+  value={form.previewImage}
+  onChange={(value) => updateForm("previewImage", value)}
+/>
+<Field
+  label="Card image (light)"
+  value={form.cardImageLight ?? ""}
+  onChange={(value) => updateForm("cardImageLight", value)}
+/>
+<Field
+  label="Card image (dark)"
+  value={form.cardImageDark ?? ""}
+  onChange={(value) => updateForm("cardImageDark", value)}
+/>
             <label className="space-y-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
               Category
               <select

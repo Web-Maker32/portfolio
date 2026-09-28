@@ -14,6 +14,7 @@ export default function Home() {
 
   return (
     <div className="space-y-12">
+      {/* Hero */}
       <section className="animate-fade-up grid overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900/80 lg:grid-cols-[1.15fr_0.85fr]">
         <div className="p-8 sm:p-10 lg:p-12">
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.25em] text-cyan-700 dark:text-cyan-300">
@@ -67,6 +68,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Process */}
       <section>
         <p className="mb-1 text-xs font-bold uppercase tracking-[0.25em] text-blue-600 dark:text-blue-400">
           How it works
@@ -88,6 +90,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Packages */}
       <section>
         <p className="mb-1 text-xs font-bold uppercase tracking-[0.25em] text-blue-600 dark:text-blue-400">
           Packages
@@ -119,6 +122,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Featured proof */}
       {featured && (
         <section>
           <div className="mb-4 flex items-end justify-between gap-4">

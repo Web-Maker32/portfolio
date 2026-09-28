@@ -2,7 +2,7 @@ export const site = {
   name: "Web Maker",
   tagline: "Next.js websites for businesses and personal brands",
   city: "Pakistan",
-  email: "hello@webmaker.dev",
+  email: "uroojnaumaan@gmail.com", // change to your real email
   github: "https://github.com/Web-Maker32",
   linkedin: "https://www.linkedin.com/in/YOUR-PROFILE",
   whatsapp: "",

@@ -2,10 +2,9 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "Learn more about my background, technical skill set, and journey as a developer.",
+  description: "Web Maker — Next.js sites for businesses and personal brands in Pakistan.",
 };
 
-// Data Structures
 const SKILL_CATEGORIES = [
   {
     name: "Frontend Development",
@@ -41,42 +40,66 @@ const TIMELINE_EVENTS = [
   },
 ];
 
-const SkillCard = ({ category, skills, index }: { category: string; skills: string[]; index: number }) => (
-  <div 
-    className="animate-fade-up rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/50 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900/80"
-    style={{ animationDelay: `${index * 0.1}s` }}
-  >
-    <h3 className="mb-4 text-lg font-bold text-slate-900 dark:text-white">{category}</h3>
-    <div className="flex flex-wrap gap-2">
-      {skills.map((skill) => (
-        <span
-          key={skill}
-          className="rounded-lg bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 transition-colors duration-200 dark:bg-blue-950/60 dark:text-blue-300"
-        >
-          {skill}
-        </span>
-      ))}
+function SkillCard({
+  category,
+  skills,
+  index,
+}: {
+  category: string;
+  skills: string[];
+  index: number;
+}) {
+  return (
+    <div
+      className="animate-fade-up rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/50 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900/80"
+      style={{ animationDelay: `${index * 0.1}s` }}
+    >
+      <h3 className="mb-4 text-lg font-bold text-slate-900 dark:text-white">{category}</h3>
+      <div className="flex flex-wrap gap-2">
+        {skills.map((skill) => (
+          <span
+            key={skill}
+            className="rounded-lg bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 transition-colors duration-200 dark:bg-blue-950/60 dark:text-blue-300"
+          >
+            {skill}
+          </span>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
+}
 
-const TimelineItem = ({ year, role, description, index }: { year: string; role: string; description: string; index: number }) => (
-  <div 
-    className="animate-fade-up relative border-l-2 border-slate-200 pb-8 pl-8 last:pb-0 dark:border-slate-800"
-    style={{ animationDelay: `${index * 0.15}s` }}
-  >
-    {/* Timeline Dot */}
-    <span className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-blue-600 bg-white dark:border-blue-400 dark:bg-slate-950" />
-    <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">{year}</span>
-    <h3 className="mt-1 text-lg font-bold text-slate-900 dark:text-white">{role}</h3>
-    <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{description}</p>
-  </div>
-);
+function TimelineItem({
+  year,
+  role,
+  description,
+  index,
+}: {
+  year: string;
+  role: string;
+  description: string;
+  index: number;
+}) {
+  return (
+    <div
+      className="animate-fade-up relative border-l-2 border-slate-200 pb-8 pl-8 last:pb-0 dark:border-slate-800"
+      style={{ animationDelay: `${index * 0.15}s` }}
+    >
+      <span className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-blue-600 bg-white dark:border-blue-400 dark:bg-slate-950" />
+      <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+        {year}
+      </span>
+      <h3 className="mt-1 text-lg font-bold text-slate-900 dark:text-white">{role}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+        {description}
+      </p>
+    </div>
+  );
+}
 
 export default function About() {
   return (
     <div className="mx-auto max-w-4xl space-y-12">
-      {/* Intro Section */}
       <section className="animate-fade-up" style={{ animationDelay: "0s" }}>
         <h1 className="mb-4 text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-5xl">
           About Me
@@ -89,19 +112,26 @@ export default function About() {
         </p>
       </section>
 
-      {/* Skills Grid Section */}
       <section>
-        <h2 className="mb-6 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">Technical Expertise</h2>
+        <h2 className="mb-6 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+          Technical Expertise
+        </h2>
         <div className="grid gap-5 md:grid-cols-3">
           {SKILL_CATEGORIES.map((cat, index) => (
-            <SkillCard key={cat.name} category={cat.name} skills={cat.skills} index={index} />
+            <SkillCard
+              key={cat.name}
+              category={cat.name}
+              skills={cat.skills}
+              index={index}
+            />
           ))}
         </div>
       </section>
 
-      {/* Experience Timeline Section */}
       <section>
-        <h2 className="mb-6 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">Journey & Experience</h2>
+        <h2 className="mb-6 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+          Journey & Experience
+        </h2>
         <div className="mt-4">
           {TIMELINE_EVENTS.map((event, index) => (
             <TimelineItem

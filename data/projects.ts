@@ -15,10 +15,10 @@ export type Project = {
   featured?: boolean;
 };
 
-const financeLight = "/projects/next-finance-thumb-light.png";
-const financeDark = "/projects/next-finance-thumb-dark.png";
-const portfolioLight = "/projects/portfolio-thumb-light.png";
-const portfolioDark = "/projects/portfolio-thumb-dark.png";
+const financeLight = "/next-finance-light.png";
+const financeDark = "/next-finance-dark.png";
+const portfolioLight = "/portfolio-light.png";
+const portfolioDark = "/portfolio-dark.png";
 
 export const projects: Project[] = [
   {
@@ -32,7 +32,7 @@ export const projects: Project[] = [
     tags: ["Next.js 14", "Tailwind CSS", "Supabase", "Zod", "TypeScript"],
     url: "https://next-finance-steel.vercel.app",
     githubUrl: "https://github.com/Web-Maker32/next-finance",
-    previewImage: "/projects/next-finance-thumb.png",
+    previewImage: "/next-finance.png",
     cardImageLight: financeLight,
     cardImageDark: financeDark,
     featured: true,
@@ -48,7 +48,7 @@ export const projects: Project[] = [
     tags: ["Next.js App Router", "Tailwind CSS", "TypeScript"],
     url: "/",
     githubUrl: "https://github.com/Web-Maker32/portfolio",
-    previewImage: "/projects/portfolio.png",
+    previewImage: "/portfolio.png",
     cardImageLight: portfolioLight,
     cardImageDark: portfolioDark,
     featured: false,
