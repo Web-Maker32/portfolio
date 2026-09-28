@@ -23,19 +23,21 @@ const SKILL_CATEGORIES = [
 
 const TIMELINE_EVENTS = [
   {
-    year: "2025 - Present",
-    role: "Full-Stack Developer",
-    description: "Building production-grade Next.js applications, focusing on scalable Server Components, clean UI design, and RESTful backend integrations.",
+    year: "2025 – now",
+    role: "Taking paid website projects",
+    description:
+      "Shipping Next.js sites and app-style builds (see Next Finance). Focus: App Router, clean UI, forms, and Supabase when a backend is needed.",
   },
   {
-    year: "2024 - 2025",
-    role: "Frontend Specialist",
-    description: "Focused heavily on mastering React, TypeScript, and responsive styling with Tailwind CSS while building personal web apps.",
+    year: "2024 – 2025",
+    role: "Practice projects",
+    description:
+      "Learned React, TypeScript, and Tailwind by building personal apps — not a job title, a practice year.",
   },
   {
     year: "2024",
-    role: "Started Web Development Journey",
-    description: "Began intensive self-directed learning in core web technologies (JavaScript, HTML, CSS) and foundational software design principles.",
+    role: "Started learning web development",
+    description: "HTML, CSS, JavaScript, then Next.js.",
   },
 ];
 
@@ -80,7 +82,10 @@ export default function About() {
           About Me
         </h1>
         <p className="text-lg leading-relaxed text-slate-600 dark:text-slate-300">
-          I’m a full-stack developer with focused learning and hands-on experience building modern, fast web applications. I specialize in creating polished digital experiences with robust frontend architecture, intuitive UX, and reliable backend services.
+          I’m Web Maker. I started learning web development in 2024 and now take
+          paid Next.js site work for small businesses and personal brands in
+          Pakistan. I keep 1–2 projects at a time so drafts actually ship. English
+          and Urdu.
         </p>
       </section>
 

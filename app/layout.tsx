@@ -11,13 +11,14 @@ const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   title: {
-    template: "%s | Next Portfolio",
-    default: "Next Portfolio",
+    template: "%s | Web Maker",
+    default: "Web Maker — Next.js websites",
   },
-  description: "A personal portfolio showcasing modern full-stack web work.",
+  description:
+    "Next.js websites for businesses and personal brands. Fixed PKR packages from ₨25,000.",
   openGraph: {
-    title: "Next Portfolio",
-    description: "Full-stack developer portfolio built with Next.js.",
+    title: "Web Maker — Next.js websites",
+    description: "Fixed PKR packages. First draft in 7 days.",
     type: "website",
   },
 };

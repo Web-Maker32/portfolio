@@ -1,10 +1,11 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabasepublishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-
-if (!supabaseUrl || !supabasepublishableKey) {
-  throw new Error("Missing Supabase environment variables in .env.local");
+export function getSupabaseBrowserClient(): SupabaseClient | null {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key);
 }
 
-export const supabase = createClient(supabaseUrl, supabasepublishableKey);
+/** @deprecated Prefer getSupabaseAdminClient() for writes */
+export const supabase = getSupabaseBrowserClient();

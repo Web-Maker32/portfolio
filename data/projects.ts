@@ -25,9 +25,9 @@ export const projects: Project[] = [
     id: 1,
     title: "Next Finance",
     description:
-      "A finance-focused Next.js website showcasing modern UI, charts, and responsive account views.",
+      "Personal finance dashboard: balances, transactions, budgets, and auth — the polish level of an app-style build.",
     details:
-      "Built with Next.js App Router, Supabase for backend data persistence, Zod for robust client/server validation, and Tailwind CSS.",
+      "Next.js App Router, Supabase persistence, Zod validation on client and server, charts, and responsive account views. This is the reference for ₨100k+ work.",
     category: "Full-Stack",
     tags: ["Next.js 14", "Tailwind CSS", "Supabase", "Zod", "TypeScript"],
     url: "https://next-finance-steel.vercel.app",
@@ -48,13 +48,11 @@ export const projects: Project[] = [
     tags: ["Next.js App Router", "Tailwind CSS", "TypeScript"],
     url: "/",
     githubUrl: "https://github.com/Web-Maker32/portfolio",
-    previewImage: "/projects/portfoliio.png",
+    previewImage: "/projects/portfolio.png",
     cardImageLight: portfolioLight,
     cardImageDark: portfolioDark,
     featured: false,
   },
 ];
-
-
 
 export const projectCategories = ["All", "Full-Stack", "Frontend"] as const;
