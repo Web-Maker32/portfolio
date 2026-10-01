@@ -341,12 +341,12 @@ export default function AdminDashboard({
         )}
 
         <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/70">
-          <div className="hidden grid-cols-[1fr_130px_110px_100px] gap-4 border-b border-slate-200 px-5 py-3 text-xs font-bold uppercase tracking-wider text-slate-400 dark:border-slate-800 sm:grid">
+          <div className="hidden grid-cols-[minmax(0,1fr)_130px_110px_160px] gap-4 border-b border-slate-200 px-5 py-3 text-xs font-bold uppercase tracking-wider text-slate-400 dark:border-slate-800 sm:grid">
             <span>Project</span><span>Category</span><span>Status</span><span>Actions</span>
           </div>
           <div className="divide-y divide-slate-200 dark:divide-slate-800">
             {visibleProjects.map((project) => (
-              <article key={project.id} className="grid gap-3 px-5 py-5 sm:grid-cols-[1fr_130px_110px_100px] sm:items-center sm:gap-4">
+              <article key={project.id} className="grid gap-3 px-5 py-5 sm:grid-cols-[minmax(0,1fr)_130px_110px_160px] sm:items-center sm:gap-4">
                 <div>
                   <h3 className="font-bold text-slate-950 dark:text-white">{project.title}</h3>
                   <p className="mt-1 line-clamp-1 text-sm text-slate-500 dark:text-slate-400">{project.description}</p>
@@ -355,7 +355,7 @@ export default function AdminDashboard({
                 <button type="button" onClick={() => toggleFeatured(project)} className={`w-fit rounded-full px-2.5 py-1 text-xs font-bold ${project.featured ? "bg-cyan-100 text-cyan-700 dark:bg-cyan-950/50 dark:text-cyan-300" : "bg-slate-100 text-slate-500 dark:bg-slate-800"}`}>
                   {project.featured ? "Featured" : "Standard"}
                 </button>
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-x-3 gap-y-2">
                   <button type="button" onClick={() => duplicateProject(project)} className="w-fit text-left text-xs font-bold text-slate-600 hover:text-cyan-600 dark:text-slate-300">Duplicate</button>
                   <button type="button" onClick={() => editProject(project)} className="w-fit text-left text-xs font-bold text-cyan-700 hover:text-cyan-500 dark:text-cyan-300">Edit</button>
                   <button type="button" onClick={() => removeProject(project)} className="w-fit text-left text-xs font-bold text-rose-600 hover:text-rose-500">Delete</button>
