@@ -1,16 +1,20 @@
 import Link from "next/link";
 import Card from "@/components/card";
 import ThemeImage from "@/components/ThemeImage";
-import { projects } from "@/data/projects";
 import { packages, site } from "@/data/site";
+import { fetchProjects } from "@/lib/projects";
+
+export const revalidate = 0;
 
 export const metadata = {
   title: "Home",
   description: `${site.tagline}. Fixed PKR packages. ${site.responseTime}.`,
 };
 
-export default function Home() {
-  const featured = projects.find((p) => p.featured) ?? projects[0];
+export default async function Home() {
+  const projectData = await fetchProjects();
+  const visibleProjects = projectData.projects;
+  const featured = visibleProjects.find((p) => p.featured) ?? visibleProjects[0];
 
   return (
     <div className="space-y-12">
@@ -18,21 +22,20 @@ export default function Home() {
       <section className="animate-fade-up grid overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900/80 lg:grid-cols-[1.15fr_0.85fr]">
         <div className="p-8 sm:p-10 lg:p-12">
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.25em] text-cyan-700 dark:text-cyan-300">
-            {site.name} · {site.city}
+            {site.name}
           </p>
           <h1 className="max-w-3xl text-4xl font-black tracking-tight text-slate-950 dark:text-white sm:text-5xl sm:leading-tight">
-            {site.tagline}
+            Websites that feel premium.
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
-            Fixed packages from ₨25,000. First draft in 7 days. Live on Vercel,
-            built with Next.js.
+            Modern websites for businesses, creators, and personal brands.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               href="/contact"
               className="rounded-xl bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-500/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-blue-500"
             >
-              Get a quote
+              Request a website
             </Link>
             <Link
               href="/about/projects"
@@ -65,6 +68,25 @@ export default function Home() {
               Latest: {featured?.title}
             </p>
           </div>
+        </div>
+      </section>
+
+      <section className="rounded-[1.5rem] border border-blue-100 bg-gradient-to-r from-blue-50 to-cyan-50 p-6 dark:border-blue-950/60 dark:from-slate-900 dark:to-slate-900">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-blue-600 dark:text-blue-400">
+              Website request
+            </p>
+            <h2 className="mt-2 text-2xl font-extrabold text-slate-900 dark:text-white">
+              Need a website for your brand?
+            </h2>
+          </div>
+          <Link
+            href="/contact"
+            className="inline-flex items-center justify-center rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+          >
+            Request a website
+          </Link>
         </div>
       </section>
 

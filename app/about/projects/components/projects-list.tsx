@@ -1,33 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import { useState, useSyncExternalStore } from "react";
 import Card from "@/components/card";
-import { projectCategories, projects } from "@/data/projects";
+import { projectCategories, type Project } from "@/data/projects";
 import ThemeImage from "@/components/ThemeImage";
 
 const favoritesChangeEvent = "project-favorites-change";
-const projectsStorageKey = "portfolio-projects";
-const projectsChangeEvent = "portfolio-projects-change";
-
-function getProjectsSnapshot() {
-  if (typeof window === "undefined") return JSON.stringify(projects);
-
-  try {
-    return localStorage.getItem(projectsStorageKey) ?? JSON.stringify(projects);
-  } catch {
-    return JSON.stringify(projects);
-  }
-}
-
-function subscribeToProjects(onChange: () => void) {
-  window.addEventListener("storage", onChange);
-  window.addEventListener(projectsChangeEvent, onChange);
-  return () => {
-    window.removeEventListener("storage", onChange);
-    window.removeEventListener(projectsChangeEvent, onChange);
-  };
-}
 
 function getFavoritesSnapshot() {
   if (typeof window === "undefined") return "{}";
@@ -59,15 +37,9 @@ function subscribeToFavorites(onChange: () => void) {
   };
 }
 
-export default function ProjectsList() {
+export default function ProjectsList({ projects }: { projects: Project[] }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [expandedProjectId, setExpandedProjectId] = useState<number | null>(null);
-  const projectsSnapshot = useSyncExternalStore(
-    subscribeToProjects,
-    getProjectsSnapshot,
-    () => JSON.stringify(projects),
-  );
-  const visibleProjects = JSON.parse(projectsSnapshot) as typeof projects;
   const favoritesSnapshot = useSyncExternalStore(
     subscribeToFavorites,
     getFavoritesSnapshot,
@@ -87,8 +59,8 @@ export default function ProjectsList() {
 
   const filteredProjects =
     selectedCategory === "All"
-      ? visibleProjects
-      : visibleProjects.filter((p) => p.category === selectedCategory);
+      ? projects
+      : projects.filter((p) => p.category === selectedCategory);
 
   return (
     <div className="space-y-6">

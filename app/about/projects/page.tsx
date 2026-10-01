@@ -3,13 +3,18 @@ import { Suspense } from "react";
 import Link from "next/link";
 import ProjectsList from "@/app/about/projects/components/projects-list";
 import ProjectListLoading from "./components/project-list-loading";
+import { fetchProjects } from "@/lib/projects";
+
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Projects",
   description: "Selected projects featuring frontend architecture and full-stack web applications.",
 };
 
-export default function Projects() {
+export default async function Projects() {
+  const { projects } = await fetchProjects();
+
   return (
     <div className="mx-auto max-w-5xl space-y-12">
       {/* Page Header */}
@@ -26,7 +31,7 @@ export default function Projects() {
       </div>
 
       <Suspense fallback={<ProjectListLoading />}>
-        <ProjectsList />
+        <ProjectsList projects={projects} />
       </Suspense>
 
       {/* Call to Action Banner */}
