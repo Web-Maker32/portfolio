@@ -3,17 +3,13 @@
 import { z } from "zod";
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 
-const WebsiteInquirySchema = z.object({
+const ContactMessageSchema = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters").max(80),
   email: z.string().trim().email("Please enter a valid email address").max(120),
-  phone: z.string().trim().max(40).optional(),
-  websiteType: z.string().min(1, "Please select a website type"),
-  budget: z.string().min(1, "Please select an estimated budget"),
-  timeline: z.string().min(1, "Please select a timeframe"),
-  description: z
+  message: z
     .string()
     .trim()
-    .min(15, "Description must be at least 15 characters")
+    .min(15, "Message must be at least 15 characters")
     .max(4000),
 });
 
@@ -23,12 +19,11 @@ export type ActionState = {
   fieldErrors?: Record<string, string>;
 };
 
-async function notifyByResend(data: z.infer<typeof WebsiteInquirySchema>) {
+async function notifyByResend(data: z.infer<typeof ContactMessageSchema>) {
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.INQUIRY_NOTIFY_EMAIL;
-  if (!apiKey || !to) return;
-
-  const from = process.env.RESEND_FROM ?? "Portfolio <beth.t@example.com>";
+  const from = process.env.RESEND_FROM;
+  if (!apiKey || !to || !from) return;
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -40,16 +35,12 @@ async function notifyByResend(data: z.infer<typeof WebsiteInquirySchema>) {
       from,
       to: [to],
       reply_to: data.email,
-      subject: `New website request: ${data.name} (${data.budget})`,
+      subject: `New portfolio message: ${data.name}`,
       text: [
         `Name: ${data.name}`,
         `Email: ${data.email}`,
-        data.phone ? `Phone: ${data.phone}` : null,
-        `Type: ${data.websiteType}`,
-        `Budget: ${data.budget}`,
-        `Timeline: ${data.timeline}`,
         "",
-        data.description,
+        data.message,
       ]
         .filter(Boolean)
         .join("\n"),
@@ -72,14 +63,10 @@ export async function submitWebsiteInquiry(
   const rawData = {
     name: formData.get("name") as string,
     email: formData.get("email") as string,
-    phone: (formData.get("phone") as string) || undefined,
-    websiteType: formData.get("websiteType") as string,
-    budget: formData.get("budget") as string,
-    timeline: formData.get("timeline") as string,
-    description: formData.get("description") as string,
+    message: formData.get("message") as string,
   };
 
-  const validation = WebsiteInquirySchema.safeParse(rawData);
+  const validation = ContactMessageSchema.safeParse(rawData);
 
   if (!validation.success) {
     const fieldErrors: Record<string, string> = {};
@@ -106,7 +93,7 @@ export async function submitWebsiteInquiry(
     if (!admin) {
       return {
         success: false,
-        error: "Leads inbox is not configured yet. Email me directly instead.",
+        error: "The message inbox is not configured yet. Please email me directly instead.",
       };
     }
 
@@ -114,11 +101,7 @@ export async function submitWebsiteInquiry(
       {
         name: payload.name,
         email: payload.email,
-        phone: payload.phone ?? null,
-        website_type: payload.websiteType,
-        budget: payload.budget,
-        timeline: payload.timeline,
-        description: payload.description,
+        message: payload.message,
         source: "contact_form",
         status: "new",
       },
@@ -128,7 +111,7 @@ export async function submitWebsiteInquiry(
       console.error("Supabase error:", dbError);
       return {
         success: false,
-        error: "Failed to save request. Please try again or email me directly.",
+        error: "Could not save your message. Please try again or email me directly.",
       };
     }
 

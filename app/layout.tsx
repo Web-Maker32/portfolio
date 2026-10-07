@@ -5,20 +5,21 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import { Providers } from "./providers";
 import { cn } from "@/lib/utils";
+import { productionSiteUrl } from "@/data/site";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(productionSiteUrl),
   title: {
     template: "%s | Web Maker",
     default: "Web Maker — Next.js websites",
   },
   description:
-    "Next.js websites for businesses and personal brands. Fixed PKR packages from ₨25,000.",
+    "A personal web development portfolio featuring independent projects built while learning Next.js and full-stack development.",
   openGraph: {
-    title: "Web Maker — Next.js websites",
-    description: "Fixed PKR packages. First draft in 7 days.",
+    title: "Web Maker — Personal Web Development Portfolio",
+    description: "Independent projects, experiments, and learning in web development.",
     type: "website",
   },
 };

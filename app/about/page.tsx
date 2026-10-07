@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "Web Maker — Next.js sites for businesses and personal brands in Pakistan.",
+  description: "About the developer behind the Portfolio Website and Next Finance personal projects.",
 };
 
 const SKILL_CATEGORIES = [
@@ -23,15 +23,15 @@ const SKILL_CATEGORIES = [
 const TIMELINE_EVENTS = [
   {
     year: "2025 – now",
-    role: "Taking paid website projects",
+    role: "Building personal projects",
     description:
-      "Shipping Next.js sites and app-style builds (see Next Finance). Focus: App Router, clean UI, forms, and Supabase when a backend is needed.",
+      "Creating Next Finance and this portfolio as independent projects to practice Next.js, responsive UI, forms, and Supabase. I have not taken on client projects yet.",
   },
   {
     year: "2024 – 2025",
     role: "Practice projects",
     description:
-      "Learned React, TypeScript, and Tailwind by building personal apps — not a job title, a practice year.",
+      "Practiced React, TypeScript, and Tailwind by building small personal apps and learning through experimentation.",
   },
   {
     year: "2024",
@@ -105,10 +105,10 @@ export default function About() {
           About Me
         </h1>
         <p className="text-lg leading-relaxed text-slate-600 dark:text-slate-300">
-          I’m Web Maker. I started learning web development in 2024 and now take
-          paid Next.js site work for small businesses and personal brands in
-          Pakistan. I keep 1–2 projects at a time so drafts actually ship. English
-          and Urdu.
+          I’m Web Maker, a self-taught developer in Pakistan. I started learning
+          web development in 2024 and have not worked on client projects yet.
+          This portfolio showcases my own projects, including Next Finance, as I
+          continue learning React, Next.js, and full-stack development.
         </p>
       </section>
 

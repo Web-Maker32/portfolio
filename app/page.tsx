@@ -1,14 +1,14 @@
 import Link from "next/link";
 import Card from "@/components/card";
 import ThemeImage from "@/components/ThemeImage";
-import { packages, site } from "@/data/site";
+import { site } from "@/data/site";
 import { fetchProjects } from "@/lib/projects";
 
 export const revalidate = 0;
 
 export const metadata = {
   title: "Home",
-  description: `${site.tagline}. Fixed PKR packages. ${site.responseTime}.`,
+  description: `${site.tagline}. Explore the Portfolio Website and Next Finance.`,
 };
 
 export default async function Home() {
@@ -17,44 +17,43 @@ export default async function Home() {
   const featured = visibleProjects.find((p) => p.featured) ?? visibleProjects[0];
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-16 pb-8">
       {/* Hero */}
-      <section className="animate-fade-up grid overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900/80 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="p-8 sm:p-10 lg:p-12">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.25em] text-cyan-700 dark:text-cyan-300">
-            {site.name}
+      <section className="animate-fade-up relative isolate grid overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-xl shadow-slate-950/5 dark:border-slate-800 dark:bg-slate-900 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="relative z-10 flex flex-col justify-center p-8 sm:p-10 lg:p-14">
+          <p className="mb-5 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-blue-700 dark:text-blue-300">
+            <span className="h-px w-7 bg-blue-600 dark:bg-blue-400" />
+            Personal portfolio · {site.city}
           </p>
-          <h1 className="max-w-3xl text-4xl font-black tracking-tight text-slate-950 dark:text-white sm:text-5xl sm:leading-tight">
-            Websites that feel premium.
+          <h1 className="max-w-3xl text-4xl font-black leading-[1.08] tracking-tight text-slate-950 dark:text-white sm:text-5xl lg:text-6xl">
+            Learning by <span className="text-blue-600 dark:text-blue-400">building for the web.</span>
           </h1>
-          <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
-            Modern websites for businesses, creators, and personal brands.
+          <p className="mt-6 max-w-xl text-base leading-7 text-slate-600 dark:text-slate-300 sm:text-lg sm:leading-8">
+            I’m learning web development through personal projects. This portfolio and Next Finance are my own builds—not client work.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              href="/contact"
-              className="rounded-xl bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-500/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-blue-500"
+              href="/about/projects"
+              className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
             >
-              Request a website
+              Explore my projects <span aria-hidden="true">↗</span>
             </Link>
             <Link
-              href="/about/projects"
-              className="rounded-xl border border-slate-300 bg-transparent px-6 py-2.5 text-sm font-semibold text-slate-700 transition-all duration-200 hover:border-blue-500 hover:text-blue-600 dark:border-slate-700 dark:text-slate-200"
+              href="/about"
+              className="rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-blue-500 hover:text-blue-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:text-blue-300"
             >
-              See work
+              About me
             </Link>
           </div>
-          <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-500 dark:text-slate-400">
-            <span className="inline-flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 shadow-[0_0_0_4px_rgba(16,185,129,0.12)]" />
-              {site.availability}
-            </span>
-            <span>{site.responseTime}</span>
+          <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 border-t border-slate-200 pt-5 text-sm text-slate-500 dark:border-slate-800 dark:text-slate-400">
+            <span>{site.portfolioNote}</span>
           </div>
         </div>
 
-        <div className="bg-slate-100 p-3 dark:bg-slate-950">
-          <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-slate-200 bg-slate-200 dark:border-slate-800 dark:bg-slate-900">
+        <div className="relative flex items-center bg-gradient-to-br from-blue-50 via-slate-100 to-cyan-100 p-4 dark:from-blue-950/50 dark:via-slate-950 dark:to-cyan-950/40 sm:p-6">
+          <div aria-hidden="true" className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-blue-400/20 blur-3xl" />
+          <div className="relative w-full overflow-hidden rounded-2xl border border-white/70 bg-white p-2 shadow-2xl shadow-blue-950/10 dark:border-slate-700 dark:bg-slate-900">
+            <div className="relative aspect-[16/11] overflow-hidden rounded-xl bg-slate-200 dark:bg-slate-800">
             {featured ? (
               <ThemeImage
                 lightSrc={featured.cardImageLight ?? featured.previewImage}
@@ -64,81 +63,34 @@ export default async function Home() {
                 priority
               />
             ) : null}
-            <p className="absolute bottom-3 left-3 rounded-lg bg-slate-950/70 px-2.5 py-1 text-xs font-medium text-white">
-              Latest: {featured?.title}
-            </p>
+            </div>
+            {featured && (
+              <div className="flex items-center justify-between gap-4 px-3 py-3">
+                <div className="min-w-0">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-600 dark:text-blue-400">Personal project</p>
+                  <p className="mt-1 truncate text-sm font-bold text-slate-900 dark:text-white">{featured.title}</p>
+                </div>
+                <Link href="/about/projects" className="shrink-0 rounded-lg px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-blue-300">
+                  View work <span aria-hidden="true">→</span>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      <section className="rounded-[1.5rem] border border-blue-100 bg-gradient-to-r from-blue-50 to-cyan-50 p-6 dark:border-blue-950/60 dark:from-slate-900 dark:to-slate-900">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-blue-600 dark:text-blue-400">
-              Website request
-            </p>
-            <h2 className="mt-2 text-2xl font-extrabold text-slate-900 dark:text-white">
-              Need a website for your brand?
-            </h2>
-          </div>
-          <Link
-            href="/contact"
-            className="inline-flex items-center justify-center rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
-          >
-            Request a website
-          </Link>
-        </div>
-      </section>
-
-      {/* Process */}
       <section>
-        <p className="mb-1 text-xs font-bold uppercase tracking-[0.25em] text-blue-600 dark:text-blue-400">
-          How it works
-        </p>
-        <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">
-          Brief → Build → Launch
-        </h2>
+        <p className="mb-1 text-xs font-bold uppercase tracking-[0.25em] text-blue-600 dark:text-blue-400">What I’m exploring</p>
+        <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">Learning through hands-on projects</h2>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           {[
-            ["1. Brief", "Tell me the pages, budget, and deadline. I reply within 24 hours."],
-            ["2. Build", "You get a first draft in about 7 days, then we revise."],
-            ["3. Launch", "Goes live on Vercel with your domain and a working contact path."],
+            ["Frontend", "Building responsive interfaces with React, Next.js, TypeScript, and Tailwind CSS."],
+            ["Full-stack", "Exploring databases, authentication, validation, and data-driven app features."],
+            ["The details", "Practicing accessible layouts, helpful interactions, and light and dark themes."],
           ].map(([title, body]) => (
             <Card key={title}>
               <h3 className="font-bold text-slate-900 dark:text-white">{title}</h3>
               <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">{body}</p>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* Packages */}
-      <section>
-        <p className="mb-1 text-xs font-bold uppercase tracking-[0.25em] text-blue-600 dark:text-blue-400">
-          Packages
-        </p>
-        <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">
-          What the money buys
-        </h2>
-        <div className="mt-4 grid gap-4 md:grid-cols-3">
-          {packages.map((pkg) => (
-            <Card key={pkg.id} className="flex h-full flex-col">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white">{pkg.name}</h3>
-              <p className="mt-1 text-sm font-semibold text-blue-600 dark:text-blue-400">
-                {pkg.price}
-              </p>
-              <p className="text-xs text-slate-500">{pkg.timeline}</p>
-              <ul className="mt-3 flex-1 space-y-1.5 text-sm text-slate-600 dark:text-slate-300">
-                {pkg.includes.map((item) => (
-                  <li key={item}>• {item}</li>
-                ))}
-              </ul>
-              <Link
-                href={`/contact?package=${pkg.id}`}
-                className="mt-4 text-sm font-semibold text-blue-600 hover:underline dark:text-blue-400"
-              >
-                Request this package →
-              </Link>
             </Card>
           ))}
         </div>
@@ -150,7 +102,7 @@ export default async function Home() {
           <div className="mb-4 flex items-end justify-between gap-4">
             <div>
               <p className="mb-1 text-xs font-bold uppercase tracking-[0.25em] text-blue-600 dark:text-blue-400">
-                Proof
+                Personal work
               </p>
               <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">
                 {featured.title}
@@ -160,7 +112,7 @@ export default async function Home() {
               href="/about/projects"
               className="text-sm font-semibold text-blue-600 hover:underline dark:text-blue-400"
             >
-              All projects →
+              All personal projects →
             </Link>
           </div>
           <Card className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

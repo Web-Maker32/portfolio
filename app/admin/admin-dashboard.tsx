@@ -367,7 +367,7 @@ export default function AdminDashboard({
             )}
           </div>
         </div>
-        <p className="text-xs leading-5 text-slate-500 dark:text-slate-400">This studio currently saves changes in this browser only. Connect Supabase Auth, a projects table, and row-level security before using it as a shared production admin.</p>
+        <p className="text-xs leading-5 text-slate-500 dark:text-slate-400">Project changes are saved to the configured Supabase database. Keep the service-role key server-only; public visitors can read projects, but only authenticated server actions can change them.</p>
       </section>
     </div>
   );

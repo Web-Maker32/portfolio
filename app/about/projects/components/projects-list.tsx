@@ -40,6 +40,8 @@ function subscribeToFavorites(onChange: () => void) {
 export default function ProjectsList({ projects }: { projects: Project[] }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [expandedProjectId, setExpandedProjectId] = useState<number | null>(null);
+  const [search, setSearch] = useState("");
+  const [favoritesOnly, setFavoritesOnly] = useState(false);
   const favoritesSnapshot = useSyncExternalStore(
     subscribeToFavorites,
     getFavoritesSnapshot,
@@ -57,33 +59,76 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
     window.dispatchEvent(new Event(favoritesChangeEvent));
   };
 
-  const filteredProjects =
-    selectedCategory === "All"
-      ? projects
-      : projects.filter((p) => p.category === selectedCategory);
+  const query = search.trim().toLowerCase();
+  const filteredProjects = projects.filter((project) => {
+    const matchesCategory = selectedCategory === "All" || project.category === selectedCategory;
+    const matchesSearch =
+      !query ||
+      [project.title, project.description, project.details, ...project.tags]
+        .some((value) => value.toLowerCase().includes(query));
+    const matchesFavorites = !favoritesOnly || favoritedProjects[project.id];
+    return matchesCategory && matchesSearch && matchesFavorites;
+  });
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center gap-2">
-        {projectCategories.map((category) => (
+      <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900/70 sm:p-5">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+          <label className="relative min-w-0 flex-1">
+            <span className="sr-only">Search projects</span>
+            <svg aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m16 16 4 4" />
+            </svg>
+            <input
+              type="search"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Search projects, tools, or details"
+              className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+            />
+          </label>
           <button
-            key={category}
             type="button"
-            onClick={() => setSelectedCategory(category)}
-            className={`rounded-xl px-4 py-2 text-xs font-semibold transition ${
-              selectedCategory === category
-                ? "bg-blue-600 text-white shadow-sm"
-                : "border border-slate-200 bg-white text-slate-600 hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-slate-700"
+            onClick={() => setFavoritesOnly((value) => !value)}
+            aria-pressed={favoritesOnly}
+            className={`inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition ${
+              favoritesOnly
+                ? "border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-700 dark:bg-amber-950/40 dark:text-amber-200"
+                : "border-slate-200 text-slate-600 hover:border-amber-300 hover:text-amber-700 dark:border-slate-700 dark:text-slate-300"
             }`}
           >
-            {category}
+            <span aria-hidden="true">{favoritesOnly ? "★" : "☆"}</span>
+            Favorites
           </button>
-        ))}
+        </div>
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-4 dark:border-slate-800">
+          <div className="flex flex-wrap items-center gap-2">
+            {projectCategories.map((category) => (
+              <button
+                key={category}
+                type="button"
+                onClick={() => setSelectedCategory(category)}
+                aria-pressed={selectedCategory === category}
+                className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+                  selectedCategory === category
+                    ? "bg-blue-600 text-white shadow-sm"
+                    : "text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+          <p aria-live="polite" className="text-xs text-slate-500 dark:text-slate-400">
+            {filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"}
+          </p>
+        </div>
       </div>
 
       {filteredProjects.length === 0 ? (
         <p className="rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500 dark:border-slate-800">
-          No projects in this category yet.
+          No projects match these filters. Try another search or category.
         </p>
       ) : (
         <ul className="flex flex-col gap-6">

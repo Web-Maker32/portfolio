@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useEffect, useState, useSyncExternalStore } from "react";
+import { site } from "@/data/site";
 
 const links = [
   { href: "/", label: "Home" },
@@ -84,7 +85,7 @@ export default function Header() {
   const linkClass = (active: boolean) =>
     `rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
       active
-        ? "bg-blue-600 text-white shadow-sm"
+        ? "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"
         : "text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
     }`;
 
@@ -93,13 +94,14 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/80 px-4 py-4 backdrop-blur dark:border-slate-800 dark:bg-slate-950/80 md:px-8">
+      <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/85 px-4 py-3 backdrop-blur-xl dark:border-slate-800/80 dark:bg-slate-950/85 md:px-8">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
           <Link
             href="/"
-            className="text-xl font-black tracking-tighter text-slate-900 transition-opacity hover:opacity-80 dark:text-white"
+            className="inline-flex items-center gap-2.5 text-base font-black tracking-tight text-slate-900 transition-opacity hover:opacity-80 dark:text-white"
           >
-            Next Portfolio
+            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-600 text-sm text-white">W</span>
+            {site.name}
           </Link>
 
           <nav className="hidden items-center gap-2 md:flex">
@@ -108,10 +110,14 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 className={linkClass(isActivePath(pathname, link.href))}
+                aria-current={isActivePath(pathname, link.href) ? "page" : undefined}
               >
                 {link.label}
               </Link>
             ))}
+            <Link href="/contact" className="ml-1 rounded-xl bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 dark:bg-white dark:text-slate-950 dark:hover:bg-blue-100">
+              Get in touch
+            </Link>
             <ThemeToggle />
           </nav>
 
@@ -143,11 +149,11 @@ export default function Header() {
       </header>
 
       {open && (
-        <div
-          className="fixed inset-0 z-[100] md:hidden"
-          style={{ backgroundColor: "rgba(0,0,0,0.75)" }}
+        <button
+          type="button"
+          className="fixed inset-0 z-[100] bg-slate-950/50 backdrop-blur-sm md:hidden"
           onClick={() => setOpen(false)}
-          aria-hidden="true"
+          aria-label="Close navigation menu"
         />
       )}
 
@@ -156,11 +162,13 @@ export default function Header() {
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{
-          backgroundColor: "#020617",
           transition: "transform 0.3s ease-out",
-          borderRight: "1px solid #1e293b",
-          boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5)",
         }}
+        role="dialog"
+        aria-modal={open}
+        aria-label="Site navigation"
+        aria-hidden={!open}
+        inert={!open}
       >
         <div className="flex items-center justify-between border-b border-slate-800 px-4 py-4">
           <span className="text-sm font-bold tracking-wide text-white">Menu</span>
@@ -188,6 +196,7 @@ export default function Header() {
                     ? "bg-blue-600 text-white"
                     : "text-slate-200 hover:bg-slate-800 hover:text-white"
                 }`}
+                aria-current={active ? "page" : undefined}
                 onClick={() => setOpen(false)}
               >
                 {link.label}
@@ -202,7 +211,7 @@ export default function Header() {
             className="block rounded-xl bg-blue-600 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-blue-500"
             onClick={() => setOpen(false)}
           >
-            Hire me
+            Get in touch
           </Link>
         </div>
       </aside>

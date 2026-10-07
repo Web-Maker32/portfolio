@@ -1,45 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Web Maker
 
-## Getting Started
+A portfolio and project inquiry site built with Next.js App Router, React, TypeScript, and Tailwind CSS.
 
-First, run the development server:
+## Run locally
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
+Requirements: Node.js 20.9 or later and pnpm 11.23.0 (the version pinned in `package.json`).
+
+```powershell
+Copy-Item .env.example .env.local
+pnpm install --frozen-lockfile
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). Set the environment values described below to enable the database-backed project catalog, admin studio, and contact submissions.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The development script uses Webpack because the current Next.js/Turbopack setup can panic while resolving the installed Next.js package on Windows. Production builds continue to use Next.js's normal optimized build pipeline.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Environment variables
 
-## Learn More
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `ADMIN_PASSWORD` | Yes for `/admin` | Password for the admin sign-in form. Use a unique, high-entropy value. |
+| `ADMIN_SESSION_SECRET` | Yes for `/admin` | Random signing secret for the HTTP-only session cookie; use 32+ random characters. |
+| `NEXT_PUBLIC_SUPABASE_URL` | Yes for database features | Supabase project URL. |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Yes for public project reads | Publishable key used to read the project catalog. |
+| `SUPABASE_SECRET_KEY` | Yes for admin edits and inquiries | Server-only Supabase secret. Never expose it to the browser or commit it. |
+| `NEXT_PUBLIC_SITE_URL` | Production | Canonical site origin, without a trailing slash; used for metadata, robots, and sitemap URLs. |
+| `RESEND_API_KEY` | Optional | Enables email notifications for new contact messages. |
+| `INQUIRY_NOTIFY_EMAIL` | Optional | Destination address for contact message notifications. |
+| `RESEND_FROM` | Optional | Verified sender address in Resend. All three Resend values are needed to send notifications. |
 
-To learn more about Next.js, take a look at the following resources:
+The contact form stores messages in Supabase. Email notifications are optional; a missing email configuration does not prevent saving a message.
 
+## Supabase setup
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. In the Supabase SQL Editor, run [`supabase/schema.sql`](./supabase/schema.sql).
+2. Set the Supabase URL and publishable key in `.env.local`.
+3. Set `SUPABASE_SECRET_KEY` on the server only (for local development, `.env.local`; for deployment, the hosting provider's server environment).
+4. Set the two admin values and restart the app.
+5. Sign in at `/admin`, then use **Restore defaults** if you want to seed the example projects. New and edited projects are stored in Supabase and publicly readable; contact messages have no public read/write policy.
 
-## Deploy on Vercel
+The admin uses a shared password and server-side Supabase actions, not Supabase Auth. Keep the admin password and server secret private, and do not add a public write policy for either table.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Checks and deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-## Admin studio
-
-The project management studio is available at `/admin`. Copy `.env.example` to `.env.local` and set:
-
-```bash
-ADMIN_PASSWORD=your-long-admin-password
-ADMIN_SESSION_SECRET=your-long-random-session-secret
+```powershell
+pnpm lint
+pnpm typecheck
+pnpm build
 ```
 
-The password is checked by a server action and the session is stored in an HTTP-only cookie. Project changes currently persist in the browser's local storage; connect the dashboard to Supabase before using it as a shared production CMS.
+GitHub Actions runs the same checks for pushes and pull requests. Configure the production environment variables in your hosting provider, set `NEXT_PUBLIC_SITE_URL` to the production origin, and deploy the Next.js app with the provider's standard Next.js integration.
