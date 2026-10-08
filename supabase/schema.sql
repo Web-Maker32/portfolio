@@ -41,7 +41,18 @@ create table if not exists public.website_inquiries (
   created_at timestamptz not null default now()
 );
 
+alter table public.website_inquiries add column if not exists name text;
+alter table public.website_inquiries add column if not exists email text;
 alter table public.website_inquiries add column if not exists message text;
+alter table public.website_inquiries add column if not exists phone text;
+alter table public.website_inquiries add column if not exists website_type text;
+alter table public.website_inquiries add column if not exists budget text;
+alter table public.website_inquiries add column if not exists timeline text;
+alter table public.website_inquiries add column if not exists description text;
+alter table public.website_inquiries add column if not exists source text not null default 'contact_form';
+alter table public.website_inquiries add column if not exists status text not null default 'new';
+alter table public.website_inquiries add column if not exists created_at timestamptz not null default now();
+
 update public.website_inquiries
   set message = coalesce(description, '')
   where message is null;
