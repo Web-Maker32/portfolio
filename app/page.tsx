@@ -4,11 +4,11 @@ import ThemeImage from "@/components/ThemeImage";
 import { site } from "@/data/site";
 import { fetchProjects } from "@/lib/projects";
 
-export const revalidate = 0;
+export const revalidate = 60;
 
 export const metadata = {
-  title: "Home",
-  description: `${site.tagline}. Explore the Portfolio Website and Next Finance.`,
+  title: `${site.name} — Frontend Developer`,
+  description: `${site.name} is a frontend developer in Pakistan building with React, Next.js, and TypeScript.`,
 };
 
 export default async function Home() {
@@ -23,17 +23,17 @@ export default async function Home() {
         <div className="relative z-10 flex flex-col justify-center p-8 sm:p-10 lg:p-14">
           <p className="mb-5 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-blue-700 dark:text-blue-300">
             <span className="h-px w-7 bg-blue-600 dark:bg-blue-400" />
-            Personal portfolio · {site.city}
+            Frontend Developer · {site.city}
           </p>
           <h1 className="max-w-3xl text-4xl font-black leading-[1.08] tracking-tight text-slate-950 dark:text-white sm:text-5xl lg:text-6xl">
-            Learning by <span className="text-blue-600 dark:text-blue-400">building for the web.</span>
+            {site.name}. <span className="text-blue-600 dark:text-blue-400">Frontend developer.</span>
           </h1>
           <p className="mt-6 max-w-xl text-base leading-7 text-slate-600 dark:text-slate-300 sm:text-lg sm:leading-8">
-            I’m learning web development through personal projects. This portfolio and Next Finance are my own builds—not client work.
+            I build responsive web experiences with React, Next.js, and TypeScript. Explore the personal projects I’ve made while growing as a developer.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              href="/about/projects"
+              href="/projects"
               className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
             >
               Explore my projects <span aria-hidden="true">↗</span>
@@ -59,7 +59,7 @@ export default async function Home() {
                 lightSrc={featured.cardImageLight ?? featured.previewImage}
                 darkSrc={featured.cardImageDark ?? featured.previewImage}
                 alt={`${featured.title} preview`}
-                sizes="(min-width: 1024px) 40vw, 100vw"
+                sizes="(min-width: 1024px) 40vw, (min-width: 640px) 90vw, 80vw"
                 priority
               />
             ) : null}
@@ -70,7 +70,7 @@ export default async function Home() {
                   <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-600 dark:text-blue-400">Personal project</p>
                   <p className="mt-1 truncate text-sm font-bold text-slate-900 dark:text-white">{featured.title}</p>
                 </div>
-                <Link href="/about/projects" className="shrink-0 rounded-lg px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-blue-300">
+                <Link href="/projects" className="shrink-0 rounded-lg px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-blue-300">
                   View work <span aria-hidden="true">→</span>
                 </Link>
               </div>
@@ -109,10 +109,10 @@ export default async function Home() {
               </h2>
             </div>
             <Link
-              href="/about/projects"
+              href="/projects"
               className="text-sm font-semibold text-blue-600 hover:underline dark:text-blue-400"
             >
-              All personal projects →
+              All projects →
             </Link>
           </div>
           <Card className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -141,7 +141,7 @@ export default async function Home() {
                 Visit live
               </a>
               <Link
-                href="/about/projects"
+                href="/projects"
                 className="rounded-xl border border-slate-300 px-4 py-2 text-xs font-semibold text-slate-700 dark:border-slate-700 dark:text-slate-200"
               >
                 Details

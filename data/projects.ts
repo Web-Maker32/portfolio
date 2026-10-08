@@ -15,6 +15,17 @@ export type Project = {
   featured?: boolean;
 };
 
+export function getProjectSlug(project: Pick<Project, "title">) {
+  const slug = project.title
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+  return slug || "project";
+}
+
 const financeLight = "/next-finance-light.png";
 const financeDark = "/next-finance-dark.png";
 const portfolioLight = "/portfolio-light.png";

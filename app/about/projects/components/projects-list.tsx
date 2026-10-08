@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useSyncExternalStore } from "react";
+import Link from "next/link";
 import Card from "@/components/card";
-import { projectCategories, type Project } from "@/data/projects";
+import { getProjectSlug, projectCategories, type Project } from "@/data/projects";
 import ThemeImage from "@/components/ThemeImage";
 
 const favoritesChangeEvent = "project-favorites-change";
@@ -155,7 +156,7 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
       lightSrc={project.cardImageLight}
       darkSrc={project.cardImageDark}
       alt={`${project.title} preview`}
-      sizes="(min-width: 1024px) 50vw, 100vw"
+      sizes="(min-width: 1024px) 50vw, (min-width: 640px) 90vw, 85vw"
     />
   </div>
 </div>
@@ -163,9 +164,9 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
                     <div className="flex flex-1 flex-col gap-3 p-6 sm:p-8">
                       <div className="flex items-center justify-between gap-3">
                         <div className="flex items-center gap-2">
-                          <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
+                          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
                             {project.title}
-                          </h3>
+                          </h2>
                           {project.featured && (
                             <span className="rounded-full bg-blue-500/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
                               Featured
@@ -210,6 +211,12 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
                       )}
 
                       <div className="mt-auto flex flex-wrap gap-3 pt-3">
+                        <Link
+                          href={`/projects/${getProjectSlug(project)}`}
+                          className="rounded-xl bg-blue-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-blue-500"
+                        >
+                          Read case study
+                        </Link>
                         <button
                           type="button"
                           onClick={() =>

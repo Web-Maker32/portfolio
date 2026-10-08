@@ -69,3 +69,57 @@ revoke all on public.website_inquiries from public, anon, authenticated;
 grant all on public.website_inquiries to service_role;
 create index if not exists website_inquiries_created_at_idx
   on public.website_inquiries (created_at desc);
+
+create table if not exists public.contact_rate_limits (
+  key_hash text primary key,
+  window_started_at timestamptz not null,
+  request_count integer not null check (request_count > 0)
+);
+
+alter table public.contact_rate_limits enable row level security;
+revoke all on public.contact_rate_limits from public, anon, authenticated;
+grant all on public.contact_rate_limits to service_role;
+
+create index if not exists contact_rate_limits_window_started_at_idx
+  on public.contact_rate_limits (window_started_at);
+
+create or replace function public.consume_contact_rate_limit(
+  p_key_hash text,
+  p_now timestamptz,
+  p_max_requests integer,
+  p_window_seconds integer
+)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  current_request_count integer;
+begin
+  insert into public.contact_rate_limits (key_hash, window_started_at, request_count)
+  values (p_key_hash, p_now, 1)
+  on conflict (key_hash) do update
+    set window_started_at = case
+      when contact_rate_limits.window_started_at <= p_now - make_interval(secs => p_window_seconds)
+        then p_now
+      else contact_rate_limits.window_started_at
+    end,
+    request_count = case
+      when contact_rate_limits.window_started_at <= p_now - make_interval(secs => p_window_seconds)
+        then 1
+      else contact_rate_limits.request_count + 1
+    end
+  returning request_count into current_request_count;
+
+  delete from public.contact_rate_limits
+    where window_started_at < p_now - interval '1 day';
+
+  return current_request_count <= p_max_requests;
+end;
+$$;
+
+revoke all on function public.consume_contact_rate_limit(text, timestamptz, integer, integer)
+  from public, anon, authenticated;
+grant execute on function public.consume_contact_rate_limit(text, timestamptz, integer, integer)
+  to service_role;

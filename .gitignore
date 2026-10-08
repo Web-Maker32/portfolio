@@ -12,9 +12,14 @@
 
 # testing
 /coverage
+/.lighthouseci/
+/playwright-report/
+/test-results/
 
 # next.js
 /.next/
+/.next-build-check/
+/.next-playwright/
 /out/
 
 # production

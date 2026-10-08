@@ -1,17 +1,11 @@
 "use server";
 
+import { createHmac } from "node:crypto";
+import { isIP } from "node:net";
+import { headers } from "next/headers";
 import { z } from "zod";
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
-
-const ContactMessageSchema = z.object({
-  name: z.string().trim().min(2, "Name must be at least 2 characters").max(80),
-  email: z.string().trim().email("Please enter a valid email address").max(120),
-  message: z
-    .string()
-    .trim()
-    .min(15, "Message must be at least 15 characters")
-    .max(4000),
-});
+import { contactMessageSchema } from "@/lib/contact-validation";
 
 export type ActionState = {
   success: boolean;
@@ -19,13 +13,13 @@ export type ActionState = {
   fieldErrors?: Record<string, string>;
 };
 
-async function notifyByResend(data: z.infer<typeof ContactMessageSchema>) {
+async function notifyByResend(data: z.infer<typeof contactMessageSchema>) {
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.INQUIRY_NOTIFY_EMAIL;
   const from = process.env.RESEND_FROM;
   if (!apiKey || !to || !from) return;
 
-  const res = await fetch("https://api.resend.com/emails", {
+  const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,
@@ -36,45 +30,35 @@ async function notifyByResend(data: z.infer<typeof ContactMessageSchema>) {
       to: [to],
       reply_to: data.email,
       subject: `New portfolio message: ${data.name}`,
-      text: [
-        `Name: ${data.name}`,
-        `Email: ${data.email}`,
-        "",
-        data.message,
-      ]
-        .filter(Boolean)
-        .join("\n"),
+      text: [`Name: ${data.name}`, `Email: ${data.email}`, "", data.message].join("\n"),
     }),
   });
 
-  if (!res.ok) {
-    console.error("Resend error:", await res.text());
+  if (!response.ok) {
+    console.error("Resend error:", await response.text());
   }
 }
 
-export async function submitWebsiteInquiry(
-  _prevState: ActionState,
-  formData: FormData
+export async function submitContactMessage(
+  _previousState: ActionState,
+  formData: FormData,
 ): Promise<ActionState> {
-  if (String(formData.get("company_website") ?? "").trim()) {
+  if (getFormString(formData, "company_website").trim()) {
     return { success: true, error: null };
   }
 
-  const rawData = {
-    name: formData.get("name") as string,
-    email: formData.get("email") as string,
-    message: formData.get("message") as string,
-  };
-
-  const validation = ContactMessageSchema.safeParse(rawData);
+  const validation = contactMessageSchema.safeParse({
+    name: getFormString(formData, "name"),
+    email: getFormString(formData, "email"),
+    message: getFormString(formData, "message"),
+  });
 
   if (!validation.success) {
     const fieldErrors: Record<string, string> = {};
-    validation.error.issues.forEach((issue) => {
-      if (issue.path[0]) {
-        fieldErrors[issue.path[0].toString()] = issue.message;
-      }
-    });
+    for (const issue of validation.error.issues) {
+      const field = issue.path[0];
+      if (field) fieldErrors[String(field)] = issue.message;
+    }
 
     return {
       success: false,
@@ -93,40 +77,91 @@ export async function submitWebsiteInquiry(
     if (!admin) {
       return {
         success: false,
-        error: "The message inbox is not configured yet. Please email me directly instead.",
+        error: "The message inbox is not configured yet. Please try again later.",
       };
     }
 
-    const { error: dbError } = await admin.from("website_inquiries").insert([
-      {
-        name: payload.name,
-        email: payload.email,
-        message: payload.message,
-        source: "contact_form",
-        status: "new",
-      },
-    ]);
+    const rateLimit = await checkContactRateLimit(admin);
+    if (!rateLimit.allowed) {
+      return { success: false, error: rateLimit.error };
+    }
 
-    if (dbError) {
-      console.error("Supabase error:", dbError);
+    const { error: databaseError } = await admin.from("website_inquiries").insert({
+      name: payload.name,
+      email: payload.email,
+      message: payload.message,
+      source: "contact_form",
+      status: "new",
+    });
+
+    if (databaseError) {
+      console.error("Contact message save failed:", databaseError.message);
       return {
         success: false,
-        error: "Could not save your message. Please try again or email me directly.",
+        error: "Could not save your message. Please try again later.",
       };
     }
 
     try {
       await notifyByResend(payload);
-    } catch (mailErr) {
-      console.error("Notify error:", mailErr);
+    } catch (error) {
+      console.error("Contact message notification failed:", error);
     }
 
     return { success: true, error: null };
-  } catch (err) {
-    console.error("Action error:", err);
+  } catch (error) {
+    console.error("Contact message action failed:", error);
     return {
       success: false,
       error: "An unexpected error occurred. Please try again later.",
     };
   }
+}
+
+async function checkContactRateLimit(
+  admin: NonNullable<ReturnType<typeof getSupabaseAdminClient>>,
+) {
+  const requestHeaders = await headers();
+  const forwardedFor = requestHeaders.get("x-forwarded-for");
+  const ipAddress =
+    requestHeaders.get("x-real-ip")?.trim() ||
+    forwardedFor?.split(",").at(-1)?.trim();
+
+  if (!ipAddress && process.env.NODE_ENV !== "production") {
+    return { allowed: true, error: null };
+  }
+
+  const secret = process.env.CONTACT_RATE_LIMIT_SECRET;
+  if (!ipAddress || isIP(ipAddress) === 0 || !secret) {
+    console.error("Contact rate limit requires the trusted client IP and CONTACT_RATE_LIMIT_SECRET.");
+    return {
+      allowed: false,
+      error: "The message form is temporarily unavailable. Please try again later.",
+    };
+  }
+
+  const keyHash = createHmac("sha256", secret).update(ipAddress).digest("hex");
+  const { data, error } = await admin.rpc("consume_contact_rate_limit", {
+    p_key_hash: keyHash,
+    p_now: new Date().toISOString(),
+    p_max_requests: 5,
+    p_window_seconds: 900,
+  });
+
+  if (error) {
+    console.error("Contact rate-limit check failed:", error.message);
+    return {
+      allowed: false,
+      error: "The message form is temporarily unavailable. Please try again later.",
+    };
+  }
+
+  return data === true
+    ? { allowed: true, error: null }
+    : { allowed: false, error: "Too many messages were sent from this network. Please try again later." };
+}
+
+function getFormString(formData: FormData, field: string) {
+  const value = formData.get(field);
+  return typeof value === "string" ? value : "";
 }

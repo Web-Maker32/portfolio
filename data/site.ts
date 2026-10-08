@@ -1,12 +1,10 @@
 export const site = {
-  name: "Web Maker",
-  tagline: "A web development portfolio of independent personal projects",
+  name: "Muhammed Hashir Ali",
+  tagline: "Frontend developer focused on React, Next.js, and thoughtful user experiences",
   city: "Pakistan",
-  email: "uroojnaumaan@gmail.com", // change to your real email
   github: "https://github.com/Web-Maker32",
-  linkedin: "https://www.linkedin.com/in/YOUR-PROFILE",
-  whatsapp: "",
-  portfolioNote: "Personal projects · No client work yet",
+  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL,
+  portfolioNote: "Frontend developer · React · Next.js · TypeScript",
 } as const;
 
 export const productionSiteUrl =

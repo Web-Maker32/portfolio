@@ -1,4 +1,5 @@
 import { site } from "@/data/site";
+import ContactEmail from "./contact-email";
 
 export default function Footer() {
   return (
@@ -8,27 +9,17 @@ export default function Footer() {
           &copy; {new Date().getFullYear()} {site.name}
         </p>
         <div className="flex flex-wrap items-center justify-center gap-5">
-          <a href={`mailto:${site.email}`} className="transition-colors hover:text-cyan-600 dark:hover:text-cyan-300">
-            Email
-          </a>
-          <a
-            href={site.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition-colors hover:text-slate-900 dark:hover:text-white"
-          >
-            GitHub
-          </a>
-          {!site.linkedin.includes("YOUR-PROFILE") ? (
+          {site.contactEmail && <ContactEmail email={site.contactEmail} />}
+          {site.github && (
             <a
-              href={site.linkedin}
+              href={site.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-colors hover:text-cyan-600 dark:hover:text-cyan-300"
+              className="transition-colors hover:text-slate-900 dark:hover:text-white"
             >
-              LinkedIn
+              GitHub
             </a>
-          ) : null}
+          )}
         </div>
       </div>
     </footer>

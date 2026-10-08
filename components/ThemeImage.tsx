@@ -30,7 +30,7 @@ export default function ThemeImage({
       alt={imageAlt}
       fill
       sizes={sizes}
-      priority={priority}
+      preload={priority}
       className={imageClassName}
     />
   );

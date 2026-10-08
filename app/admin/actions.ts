@@ -1,6 +1,6 @@
 "use server";
 
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -27,7 +27,13 @@ function isValidSession(value: string | undefined) {
   if (!secret || !value) return false;
 
   const [expiresAt, signature] = value.split(".");
-  if (!expiresAt || !signature || Number(expiresAt) < Math.floor(Date.now() / 1000)) return false;
+  if (
+    !expiresAt ||
+    !/^\d+$/.test(expiresAt) ||
+    !signature ||
+    !/^[a-f0-9]{64}$/.test(signature) ||
+    Number(expiresAt) < Math.floor(Date.now() / 1000)
+  ) return false;
 
   const expected = createHmac("sha256", secret).update(expiresAt).digest("hex");
   const actualBuffer = Buffer.from(signature, "hex");
@@ -44,8 +50,14 @@ export async function loginAdmin(_: LoginState, formData: FormData): Promise<Log
     return { error: "Admin access is not configured. Add ADMIN_PASSWORD and ADMIN_SESSION_SECRET." };
   }
 
-  if (typeof submittedPassword !== "string" || submittedPassword !== password) {
+  if (typeof submittedPassword !== "string" || !matchesPassword(submittedPassword, password)) {
     return { error: "That password is not correct." };
+  }
+
+  function matchesPassword(submitted: string, expected: string) {
+    const submittedHash = createHash("sha256").update(submitted).digest();
+    const expectedHash = createHash("sha256").update(expected).digest();
+    return timingSafeEqual(submittedHash, expectedHash);
   }
 
   const token = getSessionToken();

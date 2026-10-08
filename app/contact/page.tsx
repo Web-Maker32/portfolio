@@ -1,8 +1,9 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { submitWebsiteInquiry, type ActionState } from "./actions";
+import { validateContactField, type ContactField } from "@/lib/contact-validation";
+import { submitContactMessage, type ActionState } from "./actions";
 
 const SubmitButton = () => {
   const { pending } = useFormStatus();
@@ -20,13 +21,14 @@ const SubmitButton = () => {
 
 export default function ContactPage() {
   const formRef = useRef<HTMLFormElement>(null);
+  const [clientErrors, setClientErrors] = useState<Partial<Record<ContactField, string>>>({});
   const initialState: ActionState = {
     success: false,
     error: null,
     fieldErrors: {},
   };
 
-  const [state, formAction] = useActionState(submitWebsiteInquiry, initialState);
+  const [state, formAction] = useActionState(submitContactMessage, initialState);
 
   useEffect(() => {
     if (state.success) {
@@ -45,7 +47,7 @@ export default function ContactPage() {
           Have a question or an idea?
         </h1>
         <p className="mt-3 text-lg text-slate-600 dark:text-slate-400">
-          I haven’t taken on client projects yet. If you’d like to ask about my personal projects or share an idea, you can send me a message here.
+          I’m looking for a frontend developer opportunity. If you’d like to discuss my projects or a role, send me a message.
         </p>
       </div>
 
@@ -54,7 +56,6 @@ export default function ContactPage() {
         <form
           ref={formRef}
           action={formAction}
-          noValidate
           className="space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:border-blue-500/50 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900/80 sm:p-8"
         >
           {/* Name & Email Row */}
@@ -70,15 +71,21 @@ export default function ContactPage() {
                 autoComplete="name"
                 required
                 maxLength={80}
+                aria-invalid={Boolean(clientErrors.name || state?.fieldErrors?.name)}
+                aria-describedby={clientErrors.name || state?.fieldErrors?.name ? "name-error" : undefined}
+                onBlur={(event) => {
+                  const error = validateContactField("name", event.currentTarget.value) ?? undefined;
+                  setClientErrors((current) => ({ ...current, name: error }));
+                }}
                 className={`w-full rounded-xl border bg-transparent px-4 py-2.5 text-slate-900 transition focus:outline-none focus:ring-2 dark:text-white ${
-                  state?.fieldErrors?.name
+                  clientErrors.name || state?.fieldErrors?.name
                     ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500/20"
                     : "border-slate-300 focus:border-blue-500 focus:ring-blue-500/20 dark:border-slate-700 dark:focus:border-blue-400"
                 }`}
-                placeholder="User Name"
+                placeholder="Your name"
               />
-              {state?.fieldErrors?.name && (
-                <p className="mt-1 text-xs font-medium text-rose-500 dark:text-rose-400">{state.fieldErrors.name}</p>
+              {(clientErrors.name || state?.fieldErrors?.name) && (
+                <p id="name-error" className="mt-1 text-xs font-medium text-rose-600 dark:text-rose-400">{clientErrors.name ?? state?.fieldErrors?.name}</p>
               )}
             </div>
 
@@ -93,15 +100,21 @@ export default function ContactPage() {
                 autoComplete="email"
                 required
                 maxLength={120}
+                aria-invalid={Boolean(clientErrors.email || state?.fieldErrors?.email)}
+                aria-describedby={clientErrors.email || state?.fieldErrors?.email ? "email-error" : undefined}
+                onBlur={(event) => {
+                  const error = validateContactField("email", event.currentTarget.value) ?? undefined;
+                  setClientErrors((current) => ({ ...current, email: error }));
+                }}
                 className={`w-full rounded-xl border bg-transparent px-4 py-2.5 text-slate-900 transition focus:outline-none focus:ring-2 dark:text-white ${
-                  state?.fieldErrors?.email
+                  clientErrors.email || state?.fieldErrors?.email
                     ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500/20"
                     : "border-slate-300 focus:border-blue-500 focus:ring-blue-500/20 dark:border-slate-700 dark:focus:border-blue-400"
                 }`}
                 placeholder="username@example.com"
               />
-              {state?.fieldErrors?.email && (
-                <p className="mt-1 text-xs font-medium text-rose-500 dark:text-rose-400">{state.fieldErrors.email}</p>
+              {(clientErrors.email || state?.fieldErrors?.email) && (
+                <p id="email-error" className="mt-1 text-xs font-medium text-rose-600 dark:text-rose-400">{clientErrors.email ?? state?.fieldErrors?.email}</p>
               )}
             </div>
           </div>
@@ -118,15 +131,21 @@ export default function ContactPage() {
               required
               minLength={15}
               maxLength={4000}
+              aria-invalid={Boolean(clientErrors.message || state?.fieldErrors?.message)}
+              aria-describedby={clientErrors.message || state?.fieldErrors?.message ? "message-error" : undefined}
+              onBlur={(event) => {
+                const error = validateContactField("message", event.currentTarget.value) ?? undefined;
+                setClientErrors((current) => ({ ...current, message: error }));
+              }}
               className={`w-full rounded-xl border bg-transparent px-4 py-2.5 text-slate-900 transition focus:outline-none focus:ring-2 dark:text-white ${
-                state?.fieldErrors?.message
+                clientErrors.message || state?.fieldErrors?.message
                   ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500/20"
                   : "border-slate-300 focus:border-blue-500 focus:ring-blue-500/20 dark:border-slate-700 dark:focus:border-blue-400"
               }`}
               placeholder="Write your message..."
             />
-            {state?.fieldErrors?.message && (
-              <p className="mt-1 text-xs font-medium text-rose-500 dark:text-rose-400">{state.fieldErrors.message}</p>
+            {(clientErrors.message || state?.fieldErrors?.message) && (
+              <p id="message-error" className="mt-1 text-xs font-medium text-rose-600 dark:text-rose-400">{clientErrors.message ?? state?.fieldErrors?.message}</p>
             )}
           </div>
 
@@ -144,7 +163,7 @@ export default function ContactPage() {
             </div>
           )}
 
-          {state?.error && !state?.fieldErrors && (
+          {state?.error && (
             <div role="alert" className="animate-fade-up rounded-xl border border-rose-500/20 bg-rose-500/10 p-3 text-center text-sm font-medium text-rose-600 dark:text-rose-400">
               {state.error}
             </div>

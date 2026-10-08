@@ -1,8 +1,9 @@
 import { Metadata } from "next";
+import { site } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "About the developer behind the Portfolio Website and Next Finance personal projects.",
+  description: `About ${site.name}, a frontend developer in Pakistan focused on React and Next.js.`,
 };
 
 const SKILL_CATEGORIES = [
@@ -105,10 +106,11 @@ export default function About() {
           About Me
         </h1>
         <p className="text-lg leading-relaxed text-slate-600 dark:text-slate-300">
-          I’m Web Maker, a self-taught developer in Pakistan. I started learning
-          web development in 2024 and have not worked on client projects yet.
-          This portfolio showcases my own projects, including Next Finance, as I
-          continue learning React, Next.js, and full-stack development.
+          I’m {site.name}, a self-taught developer based in Pakistan. I began
+          learning web development in 2024 and focus on building accessible,
+          responsive interfaces with React, Next.js, and TypeScript. The projects
+          here are self-directed; I’m looking for an opportunity to grow as a
+          frontend developer and contribute to a team.
         </p>
       </section>
 

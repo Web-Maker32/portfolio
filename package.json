@@ -9,7 +9,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "playwright test",
+    "test:a11y": "playwright test --grep @a11y",
+    "lighthouse": "lhci autorun --config=./lighthouserc.json"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
@@ -32,6 +35,9 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^20",
     "@types/react": "^19",

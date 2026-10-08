@@ -3,20 +3,20 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { site } from "@/data/site";
 
 const links = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/about/projects", label: "Projects" },
+  { href: "/projects", label: "Projects" },
   { href: "/stack", label: "Stack" },
   { href: "/contact", label: "Contact" },
 ];
 
 function isActivePath(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
-  return pathname === href;
+  return pathname === href || pathname.startsWith(`${href}/`);
 }
 
 function ThemeToggle() {
@@ -66,14 +66,47 @@ function ThemeToggle() {
 export default function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    if (!open) return;
+
+    const menu = menuRef.current;
+    const trigger = menuButtonRef.current;
+    const focusable = () =>
+      menu?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+    focusable()?.item(0)?.focus();
+
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
+      if (event.key === "Escape") {
+        setOpen(false);
+        return;
+      }
+      if (event.key !== "Tab") return;
+
+      const items = focusable();
+      if (!items?.length) return;
+      const first = items.item(0);
+      const last = items.item(items.length - 1);
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
+
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, []);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      if (trigger?.isConnected) trigger.focus();
+    };
+  }, [open]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -100,7 +133,7 @@ export default function Header() {
             href="/"
             className="inline-flex items-center gap-2.5 text-base font-black tracking-tight text-slate-900 transition-opacity hover:opacity-80 dark:text-white"
           >
-            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-600 text-sm text-white">W</span>
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-sm text-white">M</span>
             {site.name}
           </Link>
 
@@ -124,10 +157,12 @@ export default function Header() {
           <div className="flex items-center gap-2 md:hidden">
             <ThemeToggle />
             <button
+              ref={menuButtonRef}
               type="button"
               className={iconBtnClass}
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
+              aria-controls="mobile-navigation"
               aria-label={open ? "Close menu" : "Open menu"}
             >
               {open ? (
@@ -158,7 +193,9 @@ export default function Header() {
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-[110] flex w-72 flex-col md:hidden ${
+        ref={menuRef}
+        id="mobile-navigation"
+        className={`fixed inset-y-0 left-0 z-[110] flex w-72 flex-col border-r border-slate-800 bg-slate-950 text-white shadow-2xl md:hidden ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{
