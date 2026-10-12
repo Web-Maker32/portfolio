@@ -13,7 +13,7 @@ const SKILL_CATEGORIES = [
   },
   {
     name: "Backend & Databases",
-    skills: ["Node.js", "REST APIs", "PostgreSQL", "Supabase"],
+    skills: ["Node.js", "Server-side features", "PostgreSQL", "Supabase"],
   },
   {
     name: "Tools & Practices",
@@ -108,7 +108,7 @@ export default function About() {
         <p className="text-lg leading-relaxed text-slate-600 dark:text-slate-300">
           I’m {site.name}, a self-taught full-stack developer based in Pakistan.
           I build web applications with React, Next.js, and TypeScript, connecting
-          accessible, responsive interfaces to APIs and database-backed features.
+          accessible, responsive interfaces to server-side features and databases.
           My projects are self-directed, and I’m looking for an opportunity to
           contribute across the stack.
         </p>
