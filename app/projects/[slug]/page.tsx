@@ -100,7 +100,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         <div className="space-y-8">
           <section>
             <h2 className="text-2xl font-bold text-slate-950 dark:text-white">
-              {caseStudy ? "Project goal" : "Overview"}
+              {caseStudy ? "Project focus" : "Project overview"}
             </h2>
             <p className="mt-3 leading-7 text-slate-600 dark:text-slate-300">
               {caseStudy?.goal ?? project.details}
@@ -108,7 +108,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </section>
           <section>
             <h2 className="text-2xl font-bold text-slate-950 dark:text-white">
-              {caseStudy ? "Implementation decisions" : "Tools used"}
+              {caseStudy ? "How I built it" : "Tools used"}
             </h2>
             <ul className="mt-3 space-y-3 text-slate-600 dark:text-slate-300">
               {decisions.map((decision) => (
@@ -126,9 +126,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 <p className="mt-3 leading-7 text-slate-600 dark:text-slate-300">{caseStudy.learned}</p>
               </section>
               <section>
-                <h2 className="text-2xl font-bold text-slate-950 dark:text-white">What I’d improve next</h2>
+                <h2 className="text-2xl font-bold text-slate-950 dark:text-white">Next improvements</h2>
                 <ul className="mt-3 space-y-3 text-slate-600 dark:text-slate-300">
-                  {caseStudy.nextSteps.map((step) => <li key={step}>{step}</li>)}
+                  {caseStudy.nextSteps.map((step) => (
+                    <li key={step} className="flex gap-3">
+                      <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-600" />
+                      <span>{step}</span>
+                    </li>
+                  ))}
                 </ul>
               </section>
             </>
@@ -136,7 +141,20 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </div>
 
         <aside className="h-fit rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-          <h2 className="font-bold text-slate-950 dark:text-white">Built with</h2>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">
+            Project snapshot
+          </p>
+          <dl className="mt-4 space-y-4">
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Type</dt>
+              <dd className="mt-1 text-sm font-medium text-slate-900 dark:text-white">Independent project</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Area</dt>
+              <dd className="mt-1 text-sm font-medium text-slate-900 dark:text-white">{project.category}</dd>
+            </div>
+          </dl>
+          <h2 className="mt-5 border-t border-slate-200 pt-5 font-bold text-slate-950 dark:border-slate-800 dark:text-white">Built with</h2>
           <ul className="mt-4 flex flex-wrap gap-2 md:flex-col">
             {project.tags.map((tag) => (
               <li key={tag} className="w-fit rounded-lg bg-slate-100 px-3 py-1.5 text-sm text-slate-700 dark:bg-slate-800 dark:text-slate-300">
