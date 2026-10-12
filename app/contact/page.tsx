@@ -47,7 +47,7 @@ export default function ContactPage() {
           Have a question or an idea?
         </h1>
         <p className="mt-3 text-lg text-slate-600 dark:text-slate-400">
-          I’m looking for a frontend developer opportunity. If you’d like to discuss my projects or a role, send me a message.
+          I’m looking for a full-stack developer opportunity. If you’d like to discuss my projects or a role, send me a message.
         </p>
       </div>
 

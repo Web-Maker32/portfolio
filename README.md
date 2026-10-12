@@ -1,6 +1,6 @@
 # Muhammed Hashir Ali — Developer Portfolio
 
-A frontend developer portfolio built with Next.js App Router, React, TypeScript, and Tailwind CSS.
+A full-stack developer portfolio built with Next.js App Router, React, TypeScript, Tailwind CSS, and Supabase.
 
 ## Run locally
 

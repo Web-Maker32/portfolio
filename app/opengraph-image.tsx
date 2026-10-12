@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { site } from "@/data/site";
 
-export const alt = `${site.name} — Frontend Developer`;
+export const alt = `${site.name} — Full-Stack Developer`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -21,13 +21,13 @@ export default function OpenGraphImage() {
         }}
       >
         <div style={{ fontSize: 25, fontWeight: 700, letterSpacing: 8, color: "#2563eb" }}>
-          FRONTEND DEVELOPER · PAKISTAN
+          FULL-STACK DEVELOPER · PAKISTAN
         </div>
         <div style={{ marginTop: 32, fontSize: 76, fontWeight: 800, letterSpacing: -3 }}>
           {site.name}
         </div>
         <div style={{ marginTop: 24, fontSize: 34, color: "#475569" }}>
-          React · Next.js · TypeScript
+          React · Next.js · TypeScript · Supabase
         </div>
         <div style={{ marginTop: 48, fontSize: 24, fontWeight: 600, color: "#2563eb" }}>
           Personal projects and code

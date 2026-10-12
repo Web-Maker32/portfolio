@@ -7,8 +7,8 @@ import { fetchProjects } from "@/lib/projects";
 export const revalidate = 60;
 
 export const metadata = {
-  title: `${site.name} — Frontend Developer`,
-  description: `${site.name} is a frontend developer in Pakistan building with React, Next.js, and TypeScript.`,
+  title: `${site.name} — Full-Stack Developer`,
+  description: `${site.name} is a full-stack developer in Pakistan building web applications with React, Next.js, TypeScript, and Supabase.`,
 };
 
 export default async function Home() {
@@ -23,13 +23,13 @@ export default async function Home() {
         <div className="relative z-10 flex flex-col justify-center p-8 sm:p-10 lg:p-14">
           <p className="mb-5 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-blue-700 dark:text-blue-300">
             <span className="h-px w-7 bg-blue-600 dark:bg-blue-400" />
-            Frontend Developer · {site.city}
+            Full-Stack Developer · {site.city}
           </p>
           <h1 className="max-w-3xl text-4xl font-black leading-[1.08] tracking-tight text-slate-950 dark:text-white sm:text-5xl lg:text-6xl">
-            {site.name}. <span className="text-blue-600 dark:text-blue-400">Frontend developer.</span>
+            {site.name}. <span className="text-blue-600 dark:text-blue-400">Full-stack developer.</span>
           </h1>
           <p className="mt-6 max-w-xl text-base leading-7 text-slate-600 dark:text-slate-300 sm:text-lg sm:leading-8">
-            I build responsive web experiences with React, Next.js, and TypeScript. Explore the personal projects I’ve made while growing as a developer.
+            I build end-to-end web applications, from responsive React interfaces to backend services, data validation, and database-backed features. Explore the projects where I put that work into practice.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
@@ -80,13 +80,13 @@ export default async function Home() {
       </section>
 
       <section>
-        <p className="mb-1 text-xs font-bold uppercase tracking-[0.25em] text-blue-600 dark:text-blue-400">What I’m exploring</p>
-        <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">Learning through hands-on projects</h2>
+        <p className="mb-1 text-xs font-bold uppercase tracking-[0.25em] text-blue-600 dark:text-blue-400">How I build</p>
+        <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">Full-stack work, from UI to data</h2>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           {[
-            ["Frontend", "Building responsive interfaces with React, Next.js, TypeScript, and Tailwind CSS."],
-            ["Full-stack", "Exploring databases, authentication, validation, and data-driven app features."],
-            ["The details", "Practicing accessible layouts, helpful interactions, and light and dark themes."],
+            ["Frontend", "Creating responsive, accessible interfaces with React, Next.js, TypeScript, and Tailwind CSS."],
+            ["Backend & data", "Connecting application features to APIs, PostgreSQL, and Supabase with validated data flows."],
+            ["End to end", "Bringing the pieces together with authentication, thoughtful interactions, and reliable app experiences."],
           ].map(([title, body]) => (
             <Card key={title}>
               <h3 className="font-bold text-slate-900 dark:text-white">{title}</h3>

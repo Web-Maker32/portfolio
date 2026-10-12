@@ -3,7 +3,7 @@ import { site } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "About",
-  description: `About ${site.name}, a frontend developer in Pakistan focused on React and Next.js.`,
+  description: `About ${site.name}, a full-stack developer in Pakistan building with React, Next.js, TypeScript, and Supabase.`,
 };
 
 const SKILL_CATEGORIES = [
@@ -106,11 +106,11 @@ export default function About() {
           About Me
         </h1>
         <p className="text-lg leading-relaxed text-slate-600 dark:text-slate-300">
-          I’m {site.name}, a self-taught developer based in Pakistan. I began
-          learning web development in 2024 and focus on building accessible,
-          responsive interfaces with React, Next.js, and TypeScript. The projects
-          here are self-directed; I’m looking for an opportunity to grow as a
-          frontend developer and contribute to a team.
+          I’m {site.name}, a self-taught full-stack developer based in Pakistan.
+          I build web applications with React, Next.js, and TypeScript, connecting
+          accessible, responsive interfaces to APIs and database-backed features.
+          My projects are self-directed, and I’m looking for an opportunity to
+          contribute across the stack and keep growing with a team.
         </p>
       </section>
 

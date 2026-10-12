@@ -38,7 +38,7 @@ export default async function ProjectsPage() {
           Want to talk about my work?
         </h2>
         <p className="mx-auto mt-2 max-w-md text-sm text-slate-600 dark:text-slate-400">
-          I’m looking for a frontend developer opportunity. Feel free to contact me about my projects.
+          I’m looking for a full-stack developer opportunity. Feel free to contact me about my projects.
         </p>
         <Link
           href="/contact"
