@@ -25,7 +25,7 @@ export default async function ProjectsPage() {
           Personal projects
         </h1>
         <p className="mt-3 max-w-2xl text-lg text-slate-600 dark:text-slate-400">
-          Independent projects I’ve built while developing my frontend and full-stack skills.
+          A closer look at the independent web applications I’ve built: what each project explores, how I approached it, and what I’d improve next.
         </p>
       </header>
 

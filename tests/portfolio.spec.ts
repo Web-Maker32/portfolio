@@ -17,7 +17,8 @@ test("legacy project list URL redirects to the current projects route", async ({
 test("project case study shows project details and source links", async ({ page }) => {
   await page.goto("/projects/next-finance");
   await expect(page.getByRole("heading", { level: 1, name: "Next Finance" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Project goal" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Project focus" })).toBeVisible();
+  await expect(page.getByText("Project snapshot")).toBeVisible();
   await expect(page.getByRole("link", { name: "View source code" })).toHaveAttribute(
     "href",
     "https://github.com/Web-Maker32/next-finance",
