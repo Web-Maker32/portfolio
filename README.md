@@ -1,6 +1,28 @@
-# Muhammed Hashir Ali — Developer Portfolio
+# Muhammed Hashir Ali — Full-Stack Developer
 
-A full-stack developer portfolio built with Next.js App Router, React, TypeScript, Tailwind CSS, and Supabase.
+A portfolio for my full-stack development work. I’m a self-taught developer based in Pakistan, building personal web projects with React, Next.js, TypeScript, and Supabase.
+
+**Live site:** [portfolio-six-snowy-76.vercel.app](https://portfolio-six-snowy-76.vercel.app)
+
+## Featured projects
+
+### [Next Finance](https://github.com/Web-Maker32/next-finance)
+
+A personal finance dashboard for balances, transactions, and budgets. Built with Next.js, TypeScript, Supabase, and Zod.
+
+- [Live demo](https://next-finance-steel.vercel.app)
+- [Source code](https://github.com/Web-Maker32/next-finance)
+
+### Portfolio Site
+
+This site showcases my projects and includes project case studies, a contact form, and light and dark themes.
+
+- [Live site](https://portfolio-six-snowy-76.vercel.app)
+- [Source code](https://github.com/Web-Maker32/portfolio)
+
+## Built with
+
+Next.js App Router · React · TypeScript · Tailwind CSS · Supabase · Zod
 
 ## Run locally
 
