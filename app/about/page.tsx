@@ -110,7 +110,7 @@ export default function About() {
           I build web applications with React, Next.js, and TypeScript, connecting
           accessible, responsive interfaces to APIs and database-backed features.
           My projects are self-directed, and I’m looking for an opportunity to
-          contribute across the stack and keep growing with a team.
+          contribute across the stack.
         </p>
       </section>
 
