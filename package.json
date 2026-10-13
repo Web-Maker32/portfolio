@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit",
     "test:e2e": "playwright test",
     "test:a11y": "playwright test --grep @a11y",
+    "screenshots": "playwright test --config=playwright.screenshots.config.ts",
     "lighthouse": "lhci autorun --config=./lighthouserc.json"
   },
   "dependencies": {
