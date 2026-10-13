@@ -84,8 +84,11 @@ pnpm build
 pnpm exec playwright install chromium
 pnpm test:e2e
 pnpm test:a11y
+pnpm screenshots
 pnpm lighthouse
 ```
+
+Run `pnpm screenshots` to refresh the desktop homepage previews in `public/portfolio-light.png`, `public/portfolio-dark.png`, and `public/portfolio.png`. It starts the local Playwright development server and captures the homepage at 1440 × 900; rerun it after visual homepage changes.
 
 Run the Lighthouse command after `pnpm build`. If Lighthouse cannot find Chrome on your machine, set the Playwright-installed Chromium path in PowerShell:
 
