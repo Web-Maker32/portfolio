@@ -14,6 +14,15 @@ test("legacy project list URL redirects to the current projects route", async ({
   await expect(page.getByRole("heading", { name: "Personal projects" })).toBeVisible();
 });
 
+test("project filters can be cleared in one action", async ({ page }) => {
+  await page.goto("/projects");
+  await page.getByRole("searchbox", { name: "Search projects" }).fill("no matching project");
+  await expect(page.getByText("No projects match these filters.")).toBeVisible();
+  await page.getByRole("button", { name: "Clear filters" }).click();
+  await expect(page.getByRole("heading", { name: "Next Finance" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Clear filters" })).toHaveCount(0);
+});
+
 test("project case study shows project details and source links", async ({ page }) => {
   await page.goto("/projects/next-finance");
   await expect(page.getByRole("heading", { level: 1, name: "Next Finance" })).toBeVisible();

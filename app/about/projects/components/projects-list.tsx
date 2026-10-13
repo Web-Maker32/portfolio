@@ -61,6 +61,7 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
   };
 
   const query = search.trim().toLowerCase();
+  const hasActiveFilters = query !== "" || selectedCategory !== "All" || favoritesOnly;
   const filteredProjects = projects.filter((project) => {
     const matchesCategory = selectedCategory === "All" || project.category === selectedCategory;
     const matchesSearch =
@@ -121,9 +122,24 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
               </button>
             ))}
           </div>
-          <p aria-live="polite" className="text-xs text-slate-500 dark:text-slate-400">
-            {filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"}
-          </p>
+          <div className="flex items-center gap-3">
+            {hasActiveFilters && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearch("");
+                  setSelectedCategory("All");
+                  setFavoritesOnly(false);
+                }}
+                className="text-xs font-semibold text-blue-600 underline-offset-4 hover:underline dark:text-blue-400"
+              >
+                Clear filters
+              </button>
+            )}
+            <p aria-live="polite" className="text-xs text-slate-500 dark:text-slate-400">
+              {filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"}
+            </p>
+          </div>
         </div>
       </div>
 
